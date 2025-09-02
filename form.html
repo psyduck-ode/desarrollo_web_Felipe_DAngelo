@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang = "es">
+<head>
+    <meta charset = "UTF-8">
+    <title> Formulario de Inscripción </title>
+</head>
+<body>
+    <div class="main-container">
+        <div id= "val-box" hidden>
+            <h2 id = "val-msg"></h2>
+            <ul id = "val-list"></ul>
+        </div>
+        <td> ¿Donde? </td><br>
+        <form name = "myForm" method ="post" enctype="multipart/form-data">
+            <label for = "select-region"> Región </label>
+            <select name = "select-region" id = "select-region" required>
+                <option value = ""> Seleccione una región </option>
+            </select><br>
+
+            <label for = "select-comuna"> Comuna </label>
+            <select name = "select-comuna" id = "select-comuna" required>
+                <option value = ""> Seleccione una comuna </option>
+            </select><br>
+
+            <label for = "input-sector"> Sector </label>
+            <input type = "text" name = "input-sector" id = "input-sector" rows="4" cols = "50"  maxlength="100">
+            <br>
+        
+            <td> ¿Contacto de esta publicación? </td><br>
+
+                <label for = "nombre"> Nombre </label>
+                <input type = "text" name = "nombre" id = "nombre" minlength="3" maxlength="200" required>
+                <br> 
+
+                <label for = "email"> Email </label>
+                <input type = "email" name = "email" id= "email" maxlength="100" required> 
+                <br>
+
+                <label for = "numTel"> Número de teléfono </label>
+                <input type = "tel" name = "numTel" id = "numTel" required>
+                <br>
+
+                <label for = "select-contactarPor"> Contactar por </label>
+                <br>
+
+                <form name = "selector-contacto" method="post">
+                    <input type="checkbox" name="whatsapp" onclick="revisaCheck(this);"> whatsapp
+                    <input id="whatsapp" type="text" name="whatsapp-id" style="display:none;" minlength="4" maxlength="50"> <br>
+
+                    <input type="checkbox" name="telegram" onclick="revisaCheck(this);"> telegram
+                    <input id="telegram" type="text" name="telegram-id" style="display:none;" minlength="4" maxlength="50"><br>
+
+                    <input type="checkbox" name="x" onclick="revisaCheck(this);"> X
+                    <input id="x" type="text" name="x-id" style="display:none;" minlength="4" maxlength="50"><br>
+
+                    <input type="checkbox" name="instagram" onclick="revisaCheck(this);"> instagram
+                    <input id="instagram" type="text" name="instagram-id" style="display:none;" minlength="4" maxlength="50"><br>
+
+                    <input type="checkbox" name="tiktok" onclick="revisaCheck(this);"> tiktok
+                    <input id="tiktok" type="text" name="tiktok-id" style="display:none;" minlength="4" maxlength="50"><br>
+
+                    <input type="checkbox" name="otra" onclick="revisaCheck(this);"> otra
+                    <input id="otra" type="text" name="otra-id" style="display:none;" minlength="4" maxlength="50"><br>
+
+                </form>
+                <br>
+
+                <td>¿Qué mascota ofrece en adopción?</td> <br>
+                <label for = "select-tipo"> Tipo </label>
+                <select name = "select-tipo" id = "select-tipo" required>
+                    <option value = ""> Seleccione un tipo</option>
+                    <option value = "perro"> Perro </option>
+                    <option value = "gato"> Gato </option>
+                </select><br>
+                
+                <label for = "input-cantidad"> Cantidad </label>
+                <input type = "number" name = "input-cantidad" id ="input-cantidad" min="1" required><br>
+
+                <label for = "input-edad"> Edad </label>
+                <input type = "number" name = "input-edad" id ="input-edad" min="1" required><br>
+
+                <label for = "select-medidaEdad"> Medida de edad </label>
+                <select name = "select-medidaEdad" id = "select-medidaEdad" required>
+                    <option value = ""> Seleccione una medida </option>
+                    <option value = "meses"> Meses </option>
+                    <option value = "años"> Años </option>
+                </select>
+
+                <label for = "input-descripcion"> Descripción </label>
+                <input type = "text" name = "input-descripcion" id = "input-descripcion" rows = "10" cols = "50"><br>
+
+                <label for = "input-foto"> Foto </label>
+                <input type = "file" name = "input-foto" id ="input-foto" required><br>
+                <button type="button" name="otra-foto" >agregar otra foto</button>
+                <input type="file" id="otra-foto" style="display:none;">
+
+
+
+        
+    <script src="js/select.js"></script>
+</body>

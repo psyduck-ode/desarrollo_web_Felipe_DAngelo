@@ -43,59 +43,59 @@
                 <label for = "select-contactarPor"> Contactar por </label>
                 <br>
 
-                <form name = "selector-contacto" method="post">
-                    <input type="checkbox" name="whatsapp" onclick="revisaCheck(this);"> whatsapp
-                    <input id="whatsapp" type="text" name="whatsapp-id" style="display:none;" minlength="4" maxlength="50"> <br>
+                <input type="checkbox" name="whatsapp" onclick="revisaCheck(this);"> whatsapp
+                <input id="whatsapp" type="text" name="whatsapp-id" style="display:none;" minlength="4" maxlength="50"> <br>
 
-                    <input type="checkbox" name="telegram" onclick="revisaCheck(this);"> telegram
-                    <input id="telegram" type="text" name="telegram-id" style="display:none;" minlength="4" maxlength="50"><br>
+                <input type="checkbox" name="telegram" onclick="revisaCheck(this);"> telegram
+                <input id="telegram" type="text" name="telegram-id" style="display:none;" minlength="4" maxlength="50"><br>
 
-                    <input type="checkbox" name="x" onclick="revisaCheck(this);"> X
-                    <input id="x" type="text" name="x-id" style="display:none;" minlength="4" maxlength="50"><br>
+                <input type="checkbox" name="x" onclick="revisaCheck(this);"> X
+                <input id="x" type="text" name="x-id" style="display:none;" minlength="4" maxlength="50"><br>
 
-                    <input type="checkbox" name="instagram" onclick="revisaCheck(this);"> instagram
-                    <input id="instagram" type="text" name="instagram-id" style="display:none;" minlength="4" maxlength="50"><br>
+                <input type="checkbox" name="instagram" onclick="revisaCheck(this);"> instagram
+                <input id="instagram" type="text" name="instagram-id" style="display:none;" minlength="4" maxlength="50"><br>
 
-                    <input type="checkbox" name="tiktok" onclick="revisaCheck(this);"> tiktok
-                    <input id="tiktok" type="text" name="tiktok-id" style="display:none;" minlength="4" maxlength="50"><br>
+                <input type="checkbox" name="tiktok" onclick="revisaCheck(this);"> tiktok
+                <input id="tiktok" type="text" name="tiktok-id" style="display:none;" minlength="4" maxlength="50"><br>
 
-                    <input type="checkbox" name="otra" onclick="revisaCheck(this);"> otra
-                    <input id="otra" type="text" name="otra-id" style="display:none;" minlength="4" maxlength="50"><br>
+                <input type="checkbox" name="otra" onclick="revisaCheck(this);"> otra
+                <input id="otra" type="text" name="otra-id" style="display:none;" minlength="4" maxlength="50"><br>
 
-                </form>
-                <br>
 
-                <td>¿Qué mascota ofrece en adopción?</td> <br>
-                <label for = "select-tipo"> Tipo </label>
-                <select name = "select-tipo" id = "select-tipo" required>
-                    <option value = ""> Seleccione un tipo</option>
-                    <option value = "perro"> Perro </option>
-                    <option value = "gato"> Gato </option>
-                </select><br>
+            <td>¿Qué mascota ofrece en adopción?</td> <br>
+            <label for = "select-tipo"> Tipo </label>
+            <select name = "select-tipo" id = "select-tipo" required>
+                <option value = ""> Seleccione un tipo</option>
+                <option value = "perro"> Perro </option>
+                <option value = "gato"> Gato </option>
+            </select><br>
                 
-                <label for = "input-cantidad"> Cantidad </label>
-                <input type = "number" name = "input-cantidad" id ="input-cantidad" min="1" required><br>
+            <label for = "input-cantidad"> Cantidad </label>
+            <input type = "number" name = "input-cantidad" id ="input-cantidad" min="1" required><br>
 
-                <label for = "input-edad"> Edad </label>
-                <input type = "number" name = "input-edad" id ="input-edad" min="1" required><br>
+            <label for = "input-edad"> Edad </label>
+            <input type = "number" name = "input-edad" id ="input-edad" min="1" required><br>
 
-                <label for = "select-medidaEdad"> Medida de edad </label>
-                <select name = "select-medidaEdad" id = "select-medidaEdad" required>
-                    <option value = ""> Seleccione una medida </option>
-                    <option value = "meses"> Meses </option>
-                    <option value = "años"> Años </option>
-                </select>
+            <label for = "select-medidaEdad"> Medida de edad </label>
+            <select name = "select-medidaEdad" id = "select-medidaEdad" required>
+                <option value = ""> Seleccione una medida </option>
+                <option value = "meses"> Meses </option>
+                <option value = "años"> Años </option>
+            </select><br>
 
-                <label for = "input-descripcion"> Descripción </label>
-                <input type = "text" name = "input-descripcion" id = "input-descripcion" rows = "10" cols = "50"><br>
+            <label for = "fecha-disponible-entrega"> Fecha disponible para la entrega</label>
+            <input type = "datetime-local" id = "fecha-disponible-entrega" name = "fecha-disponible-entrega"><br>
 
-                <label for = "input-foto"> Foto </label>
-                <input type = "file" name = "input-foto" id ="input-foto" required><br>
-                <button type="button" name="otra-foto" >agregar otra foto</button>
-                <input type="file" id="otra-foto" style="display:none;">
+            <label for = "input-descripcion"> Descripción </label>
+            <input type = "text" name = "input-descripcion" id = "input-descripcion" rows = "10" cols = "50"><br>
 
+            <label for = "input-foto"> Foto </label>
+            <input type = "file" name = "input-foto" id ="input-foto" required><br>
+            <button type="button" id = "btn-agregar-foto" name="otra-foto" >agregar otra foto</button>
+            <input type="file" id="otra-foto" style="display:none;">
+        </form>
 
-
-        
+        <button type = "submit" id = "btn-enviar"> Agregar este aviso de adopción</button>
     <script src="js/select.js"></script>
+    <script src="js/validation.js"></script>
 </body>

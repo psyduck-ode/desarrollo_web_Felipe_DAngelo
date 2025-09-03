@@ -28,20 +28,37 @@ const validatePhoneNumber = (phoneNumber) => {
   return formatValid;
 };
 
-const validateContactarPor = (contactarPor) => {
-  //Para ver si se selecciona solo 5, lo veremos en el validateForm
-  contactarPor.array.forEach(element => {
-    let boolElement = element.length >= 5 && element.length <= 50;
-    //Retornamos el valor de verdad
-    return boolElement;
-  }); 
+const validateContactarPor = () => {
+  // obtenemos todos los checkboxes de "contactar por"
+  let checkboxes = document.querySelectorAll(
+    'input[type="checkbox"][name="whatsapp"], \
+     input[type="checkbox"][name="telegram"], \
+     input[type="checkbox"][name="x"], \
+     input[type="checkbox"][name="instagram"], \
+     input[type="checkbox"][name="tiktok"], \
+     input[type="checkbox"][name="otra"]'
+  );
 
-}
+  let valid = false;
+
+  checkboxes.forEach(chk => {
+    if (chk.checked) {
+      // si está marcado, revisamos el input de texto asociado
+      let inputId = chk.name + "-id"; // ej: "whatsapp-id"
+      let inputElem = document.getElementsByName(inputId)[0];
+      if (inputElem && inputElem.value.trim().length >= 4 && inputElem.value.trim().length <= 50) {
+        valid = true;
+      }
+    }
+  });
+
+  return valid;
+};
 
 const validateCantidadEdad = (cantidad) => {
   let cantidadTipo = typeof cantidad;
   if(cantidadTipo != "number") return false;
-  if(cantidad,value < 1) return false;
+  if(cantidad < 1) return false;
   return true;
 }
 
@@ -75,7 +92,7 @@ const validateForm = () => {
   let email = myForm["email"].value;
   let numeroTel = myForm["numTel"].value;
   let name = myForm["nombre"].value;
-  let files = myForm["files"].files;
+  let files = myForm["input-foto"].files;
   let region = myForm["select-region"].value;
   let comuna = myForm["select-comuna"].value;
   let sector = myForm["input-sector"].value;
@@ -85,7 +102,6 @@ const validateForm = () => {
   let medidaEdad = myForm["select-medidaEdad"].value;
   let fechaEntrega = myForm["fecha-disponible-entrega"].value;
   let foto = myForm["input-foto"].value;
-  let contactarPor = myForm["contactar-por"].value;
 
   // variables auxiliares de validación y función.
   let invalidInputs = [];
@@ -114,7 +130,7 @@ const validateForm = () => {
   if(!validateSelect(comuna)){
     setInvalidInput("Comuna");
   }
-  if(!validateContactarPor(contactarPor)){
+  if(!validateContactarPor()){
     setInvalidInput("Contactar por");
   }
   if(!validateSelect(tipo)){

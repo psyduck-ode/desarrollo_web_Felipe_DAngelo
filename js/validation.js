@@ -59,24 +59,20 @@ const validateCantidadEdad = (cantidad) => {
   return true;
 }
 
-const validateFiles = (files) => {
-  if (!files) return false;
-
-  // validación del número de archivos
-  let lengthValid = 1 <= files.length && files.length <= 5;
-
-  // validación del tipo de archivo
-  let typeValid = true;
-
-  for (const file of files) {
-    // el tipo de archivo debe ser "image/<foo>" o "application/pdf"
-    let fileFamily = file.type.split("/")[0];
-    typeValid &&= fileFamily == "image";
+const agregarFoto = () =>{
+  let cantidadFotos = document.querySelectorAll('input[type="file"]').length;
+  if (cantidadFotos >= 5) {
+    return false;
+  }else{
+    const nuevoEspacio = document.createElement("input");
+    nuevoEspacio.type = "file";
+    nuevoEspacio.style.display = "block";
+    const agregar = document.getElementById("mas-fotos");
+    agregar.appendChild(nuevoEspacio);
   }
 
-  // devolvemos la lógica AND de las validaciones.
-  return lengthValid && typeValid;
-};
+  return true
+}
 
 const validateSelect = (select) => {
   if(!select) return false;
@@ -92,13 +88,11 @@ const validateForm = () => {
   let files = myForm["input-foto"].files;
   let region = myForm["select-region"].value;
   let comuna = myForm["select-comuna"].value;
-  let sector = myForm["input-sector"].value;
   let tipo = myForm["select-tipo"].value;
   let cantidad = parseInt(myForm["input-cantidad"].value);
   let edad = parseInt(myForm["input-edad"].value);
   let medidaEdad = myForm["select-medidaEdad"].value;
   let fechaEntrega = myForm["fecha-disponible-entrega"].value;
-  let foto = myForm["input-foto"].value;
 
   // variables auxiliares de validación y función.
   let invalidInputs = [];
@@ -141,6 +135,10 @@ const validateForm = () => {
   }
   if(!validateSelect(medidaEdad)){
     setInvalidInput("Medida de Edad");
+  }
+
+  if(!agregarFoto()){
+    setInvalidInput("Fotos, máximo 5")
   }
 
 

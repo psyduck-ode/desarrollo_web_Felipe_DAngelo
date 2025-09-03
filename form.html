@@ -91,8 +91,10 @@
 
             <label for = "input-foto"> Foto </label>
             <input type = "file" name = "input-foto" id ="input-foto" required><br>
-            <button type="button" id = "btn-agregar-foto" name="otra-foto" >agregar otra foto</button>
-            <input type="file" id="otra-foto" style="display:none;">
+            <button type="button" id = "btn-agregar-foto" name="otra-foto" onclick="agregarFoto()">agregar otra foto</button>
+            
+            <div id = "mas-fotos"></div>
+            
             <br>
 
         <button type = "button" id = "btn-enviar"> Agregar este aviso de adopción</button>

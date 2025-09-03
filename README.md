@@ -6,5 +6,7 @@ Complicaciones a lo largo de la tarea:
 valdiateContactarPor: Con esta función tuve problemas pq estaba basandome en el aux3 y habían ciertas cosas que no me estaban saliendo, por lo que
 tuve que recurrir a chatGPT para que me ayudara a comparar el problema. El problema era que estaba tomando un campo que no existia en el html, esto seguía en mi antigua función para validar el contactar por, así que tuve que cambiarla de nuevo y hacer algo diferente a lo que tenía en mente. Además estaba ocupando un btn como submit en vez de button, lo que significaba que no se verificara el formulario al apretar el botón. Finalmente también estaba mala esa función, dado que hacía cualquier otra cosa menos ver si estaban marcadas las 5 cajas.
 
+agregarFoto: Esta función también me complico, ya que la forma que estaba en el aux 3 no me servía, así que tuve que buscar por el internet como hacerla funcionar.
+
 
 

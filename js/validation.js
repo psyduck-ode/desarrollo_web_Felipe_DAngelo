@@ -78,13 +78,14 @@ const validateForm = () => {
   let files = myForm["files"].files;
   let region = myForm["select-region"].value;
   let comuna = myForm["select-comuna"].value;
-  let sector = myForm["select-sector"].value;
+  let sector = myForm["input-sector"].value;
   let tipo = myForm["select-tipo"].value;
-  let cantidad = myForm["cantidad-cantidad"].value;
-  let edad = myForm["cantidad-edad"].value;
+  let cantidad = parseInt(myForm["input-cantidad"].value);
+  let edad = parseInt(myForm["input-edad"].value);
   let medidaEdad = myForm["select-medidaEdad"].value;
   let fechaEntrega = myForm["fecha-disponible-entrega"].value;
   let foto = myForm["input-foto"].value;
+  let contactarPor = myForm["contactar-por"].value;
 
   // variables auxiliares de validación y función.
   let invalidInputs = [];
@@ -113,7 +114,21 @@ const validateForm = () => {
   if(!validateSelect(comuna)){
     setInvalidInput("Comuna");
   }
-
+  if(!validateContactarPor(contactarPor)){
+    setInvalidInput("Contactar por");
+  }
+  if(!validateSelect(tipo)){
+    setInvalidInput("Tipo");
+  }
+  if(!validateCantidadEdad(cantidad)){
+    setInvalidInput("Cantidad");
+  }
+  if(!validateCantidadEdad(edad)){
+    setInvalidInput("Edad");
+  }
+  if(!validateSelect(medidaEdad)){
+    setInvalidInput("Medida de Edad");
+  }
 
 
   // finalmente mostrar la validación

@@ -10,8 +10,8 @@
             <h2 id = "val-msg"></h2>
             <ul id = "val-list"></ul>
         </div>
-        <td> ¿Donde? </td><br>
         <form name = "myForm" method ="post" enctype="multipart/form-data">
+            <td> ¿Donde? </td><br>
             <label for = "select-region"> Región </label>
             <select name = "select-region" id = "select-region" required>
                 <option value = ""> Seleccione una región </option>
@@ -44,22 +44,22 @@
                 <br>
 
                 <input type="checkbox" name="whatsapp" onclick="revisaCheck(this);"> whatsapp
-                <input id="whatsapp" type="text" name="whatsapp-id" style="display:none;" minlength="4" maxlength="50"> <br>
+                <input id="whatsapp" type="text" name="whatsapp-id" style="display:none;" onclick="revisaCheck(this);" minlength="4" maxlength="50"> <br>
 
                 <input type="checkbox" name="telegram" onclick="revisaCheck(this);"> telegram
-                <input id="telegram" type="text" name="telegram-id" style="display:none;" minlength="4" maxlength="50"><br>
+                <input id="telegram" type="text" name="telegram-id" style="display:none;" onclick="revisaCheck(this);" minlength="4" maxlength="50"><br>
 
                 <input type="checkbox" name="x" onclick="revisaCheck(this);"> X
-                <input id="x" type="text" name="x-id" style="display:none;" minlength="4" maxlength="50"><br>
+                <input id="x" type="text" name="x-id" style="display:none;" onclick="revisaCheck(this);" minlength="4" maxlength="50"><br>
 
                 <input type="checkbox" name="instagram" onclick="revisaCheck(this);"> instagram
-                <input id="instagram" type="text" name="instagram-id" style="display:none;" minlength="4" maxlength="50"><br>
+                <input id="instagram" type="text" name="instagram-id" style="display:none;" onclick="revisaCheck(this);" minlength="4" maxlength="50"><br>
 
                 <input type="checkbox" name="tiktok" onclick="revisaCheck(this);"> tiktok
-                <input id="tiktok" type="text" name="tiktok-id" style="display:none;" minlength="4" maxlength="50"><br>
+                <input id="tiktok" type="text" name="tiktok-id" style="display:none;" onclick="revisaCheck(this);" minlength="4" maxlength="50"><br>
 
                 <input type="checkbox" name="otra" onclick="revisaCheck(this);"> otra
-                <input id="otra" type="text" name="otra-id" style="display:none;" minlength="4" maxlength="50"><br>
+                <input id="otra" type="text" name="otra-id" style="display:none;" onclick="revisaCheck(this);" minlength="4" maxlength="50"><br>
 
 
             <td>¿Qué mascota ofrece en adopción?</td> <br>
@@ -93,7 +93,8 @@
             <input type = "file" name = "input-foto" id ="input-foto" required><br>
             <button type="button" id = "btn-agregar-foto" name="otra-foto" >agregar otra foto</button>
             <input type="file" id="otra-foto" style="display:none;">
-        
+            <br>
+
         <button type = "button" id = "btn-enviar"> Agregar este aviso de adopción</button>
         <div id="confirmar" class="modal" style="display: none;">
         <div class="modal-box">
@@ -107,5 +108,6 @@
     </div>
     <script src="js/select.js"></script>
     <script src="js/validation.js"></script>
+    <script src="js/revisaCheck.js"></script>
 </body>
 </html>

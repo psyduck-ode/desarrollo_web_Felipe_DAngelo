@@ -1,6 +1,6 @@
 const validateName = (name) => {
   if(!name) return false;
-  let lengthValid = name.trim().length >= 4 && name.trim().length <= 200;
+  let lengthValid = name.trim().length >= 3 && name.trim().length <= 200;
   
   return lengthValid;
 }
@@ -172,7 +172,7 @@ const validateForm = () => {
     myForm.style.display = "none";
 
     // establecer mensaje de éxito
-    validationMessageElem.innerText = "¡Formulario válido! ¿Deseas enviarlo o volver?";
+    validationMessageElem.innerText = "¿Está seguro que desea agregar esta actividad?";
     validationListElem.textContent = "";
 
     // aplicar estilos de éxito
@@ -181,7 +181,7 @@ const validateForm = () => {
 
     // Agregar botones para enviar el formulario o volver
     let submitButton = document.createElement("button");
-    submitButton.innerText = "Enviar";
+    submitButton.innerText = "Sí, estoy seguro";
     submitButton.style.marginRight = "10px";
     submitButton.addEventListener("click", () => {
       // myForm.submit();
@@ -189,7 +189,7 @@ const validateForm = () => {
     });
 
     let backButton = document.createElement("button");
-    backButton.innerText = "Volver";
+    backButton.innerText = "No,no estoy seguro, quiero volver al formulario.";
     backButton.addEventListener("click", () => {
       // Mostrar el formulario nuevamente
       myForm.style.display = "block";

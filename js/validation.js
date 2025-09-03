@@ -41,17 +41,14 @@ const validateContactarPor = () => {
 
   let valid = false;
 
+  let checkedCount = 0;
   checkboxes.forEach(chk => {
     if (chk.checked) {
-      // si está marcado, revisamos el input de texto asociado
-      let inputId = chk.name + "-id"; // ej: "whatsapp-id"
-      let inputElem = document.getElementsByName(inputId)[0];
-      if (inputElem && inputElem.value.trim().length >= 4 && inputElem.value.trim().length <= 50) {
-        valid = true;
-      }
+      checkedCount++;
     }
-  });
 
+    if(checkedCount > 0 && checkedCount<=5) valid = true;
+  });
   return valid;
 };
 

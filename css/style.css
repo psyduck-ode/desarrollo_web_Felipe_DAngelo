@@ -1,0 +1,126 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #F9F9F9;
+  color: #333;
+}
+
+/* Encabezado */
+header {
+  background-color: #4CAF50;
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Secciones de animales */
+.animal-card {
+  border: 1px solid #D7CCC8;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  background-color: #FAFAFA;
+  transition: transform 0.2s;
+}
+
+.animal-card:hover {
+  transform: scale(1.02);
+  background-color: #f0f8f5;
+}
+
+.animal-card img {
+  max-width: 150px;
+  border-radius: 10px;
+  margin-right: 1.5rem;
+}
+
+/* Formularios */
+form label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+form input, 
+form select, 
+form textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  transition: border-color 0.3s;
+}
+
+form input:focus, 
+form select:focus, 
+form textarea:focus {
+  border-color: #8D6E63;
+  outline: none;
+}
+
+/* Botones */
+button {
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #388E3C;
+}
+
+/* Caja de validación */
+#val-box {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-left: 6px solid;
+  border-radius: 8px;
+  display: none;
+}
+
+#val-box.error {
+  background-color: #ffdddd;
+  border-left-color: #f44336;
+  color: #600;
+}
+
+#val-box.success {
+  background-color: #ddffdd;
+  border-left-color: #4CAF50;
+  color: #063;
+}
+
+/* Footer */
+footer {
+  background-color: #8D6E63;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}

@@ -84,6 +84,8 @@ const validateFechaHora = () =>{
 
   const fechaRellenada = `${año}-${mes}-${dia}T${horas}:${minutos}`;
 
+  return true
+
 }
 
 const validateSelect = (select) => {
@@ -104,7 +106,6 @@ const validateForm = () => {
   let cantidad = parseInt(myForm["input-cantidad"].value);
   let edad = parseInt(myForm["input-edad"].value);
   let medidaEdad = myForm["select-medidaEdad"].value;
-  let fechaEntrega = myForm["fecha-disponible-entrega"].value;
 
   // variables auxiliares de validación y función.
   let invalidInputs = [];
@@ -124,9 +125,8 @@ const validateForm = () => {
   if (!validatePhoneNumber(numeroTel)) {
     setInvalidInput("Número");
   }
-  if (!validateFiles(files)) {
-    setInvalidInput("Fotos");
-  }
+
+  
   if(!validateSelect(region)){
     setInvalidInput("Región");
   }
@@ -152,6 +152,10 @@ const validateForm = () => {
   if(!agregarFoto()){
     setInvalidInput("Fotos, máximo 5")
   }
+
+  if (!validateFechaHora()) {
+  setInvalidInput("Fecha de entrega");
+}
 
 
   // finalmente mostrar la validación
@@ -191,12 +195,24 @@ const validateForm = () => {
 
     // Agregar botones para enviar el formulario o volver
     let submitButton = document.createElement("button");
+    
     submitButton.innerText = "Sí, estoy seguro";
     submitButton.style.marginRight = "10px";
     submitButton.addEventListener("click", () => {
-      // myForm.submit();
-      // no tenemos un backend al cual enviarle los datos
+      validationMessageElem.innerText = "Hemos recibido la información de adopción, muchas gracias y suerte";
+      validationListElem.textContent = "";
+      let homeButton = document.createElement("button");
+      homeButton.innerText = "Volver al inicio";
+      homeButton.addEventListener("click", () => {
+        window.location.href = "index.html";
+      });
+      validationListElem.appendChild(homeButton);
     });
+
+    //let homeButton = document.createElement("button");
+    //validationMessageElem.innerText = "Hemos recibido la información de adopción, muchas gracias y suerte";
+    //homeButton.innerText = "Volver al inicio";
+    //homeButton.addEventListener("click", window.location.href = "index.html");
 
     let backButton = document.createElement("button");
     backButton.innerText = "No,no estoy seguro, quiero volver al formulario.";

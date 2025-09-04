@@ -74,6 +74,18 @@ const agregarFoto = () =>{
   return true
 }
 
+const validateFechaHora = () =>{
+  const ahora = new Date();
+  const año = ahora.getFullYear();
+  const mes = String(ahora.getMonth() + 1).padStart(2, '0'); // Los meses son 0-11
+  const dia = String(ahora.getDate()).padStart(2, '0');
+  const horas = String(ahora.getHours()).padStart(2, '0');
+  const minutos = String(ahora.getMinutes()).padStart(2, '0');
+
+  const fechaRellenada = `${año}-${mes}-${dia}T${horas}:${minutos}`;
+
+}
+
 const validateSelect = (select) => {
   if(!select) return false;
   return true

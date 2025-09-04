@@ -8,5 +8,7 @@ tuve que recurrir a chatGPT para que me ayudara a comparar el problema. El probl
 
 agregarFoto: Esta función también me complico, ya que la forma que estaba en el aux 3 no me servía, así que tuve que buscar por el internet como hacerla funcionar.
 
+CSS: El css se lo pedí a chatGPT, por ende le pedí algo simple.
+
 
 

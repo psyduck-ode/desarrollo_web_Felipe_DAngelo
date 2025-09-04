@@ -59,20 +59,23 @@ const validateCantidadEdad = (cantidad) => {
   return true;
 }
 
-const agregarFoto = () =>{
+const validateAgregarFoto = () => {
   let cantidadFotos = document.querySelectorAll('input[type="file"]').length;
-  if (cantidadFotos >= 5) {
-    return false;
-  }else{
+  return cantidadFotos >= 1 && cantidadFotos <= 5;
+}
+
+const agregarFoto = () =>{
+    const agregar = document.getElementById("btn-agregar-foto");
     const nuevoEspacio = document.createElement("input");
     nuevoEspacio.type = "file";
     nuevoEspacio.style.display = "block";
-    const agregar = document.getElementById("mas-fotos");
-    agregar.appendChild(nuevoEspacio);
-  }
-
-  return true
+    const contenedor = document.getElementById("mas-fotos");
+    contenedor.appendChild(nuevoEspacio);
+    if(document.querySelectorAll('input[type="file"]').length > 5){
+      agregar.disabled = true;
+    }
 }
+
 
 const validateFechaHora = () =>{
   const ahora = new Date();
@@ -149,8 +152,8 @@ const validateForm = () => {
     setInvalidInput("Medida de Edad");
   }
 
-  if(!agregarFoto()){
-    setInvalidInput("Fotos, máximo 5")
+  if(!validateAgregarFoto()){
+    setInvalidInput("Fotos")
   }
 
   if (!validateFechaHora()) {

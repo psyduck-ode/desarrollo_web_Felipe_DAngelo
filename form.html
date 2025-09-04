@@ -3,7 +3,6 @@
 <head>
     <meta charset = "UTF-8">
     <title> Formulario de Inscripción </title>
-    <link rel="stylesheet" href= "css/style.css">
 </head>
 <body>
     <div class="main-container">
@@ -88,7 +87,7 @@
             <input type = "datetime-local" id = "fecha-disponible-entrega" name = "fecha-disponible-entrega"><br>
 
             <label for = "input-descripcion"> Descripción </label>
-            <input type = "text" name = "input-descripcion" id = "input-descripcion" rows = "10" cols = "50"><br>
+            <textarea name = "input-descripcion" id = "input-descripcion" rows = "10" cols = "50"></textarea><br>
 
             <label for = "input-foto"> Foto </label>
             <input type = "file" name = "input-foto" id ="input-foto" required><br>
@@ -114,5 +113,6 @@
     <script src="js/validation.js"></script>
     <script src="js/revisaCheck.js"></script>
     <script src="js/fechaHora.js"></script>
+    <script src="js/agregarFoto.js"></script>
 </body>
 </html>

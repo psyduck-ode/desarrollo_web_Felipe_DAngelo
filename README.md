@@ -10,5 +10,5 @@ agregarFoto: Esta función también me complico, ya que la forma que estaba en e
 
 CSS: El css se lo pedí a chatGPT, por ende le pedí algo simple.
 
-
+Para la función de agregar fotos y la validación del formulario, me encontré con un problema donde si trataba de validar dicho formulario, se me agregaba una input del tipo file, por lo que no era bueno. Sin embargo, decidí borrar esa restricción ya que sino no se podía mandar el formulario.
 

@@ -71,7 +71,7 @@ const agregarFoto = () =>{
     nuevoEspacio.style.display = "block";
     const contenedor = document.getElementById("mas-fotos");
     contenedor.appendChild(nuevoEspacio);
-    if(document.querySelectorAll('input[type="file"]').length > 5){
+    if(document.querySelectorAll('input[type="file"]').length >= 5){
       agregar.disabled = true;
     }
 }

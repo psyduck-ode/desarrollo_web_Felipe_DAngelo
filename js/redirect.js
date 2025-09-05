@@ -20,6 +20,6 @@ document.querySelectorAll('#actividades-mas tbody tr').forEach((row) => {
         localStorage.setItem("infoActividad", JSON.stringify(infoActividad));
 
         //Redireccion
-        window.location.href = 'informacio_actividad.html'
+        window.location.href = 'informacion_actividad.html'
     })
 })

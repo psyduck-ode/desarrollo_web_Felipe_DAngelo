@@ -18,3 +18,5 @@ Con todas estás complicaciones dichas, doy por terminado la tarea
 # Tarea 2
 Para comenzar esta tarea, le pedi ayuda a chatGPT para que me guiara para crear la base de datos dado que yo no entendí muy bien el enunciado y como seguirlo para crear la base. Igual deje todo en los archvios que use para esto dento de la carpeta database; también me ayudo para establecer la conexión.
 
+# Tarea 3
+Para esta tarea utilice IA para realizar lo de la tarea 2 y así no atrazarme tanto. Por otra parte, aquí comienza la tarea 3 en donde se verá el tema de los gráficos y estadísticas de la app web.

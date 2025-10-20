@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, Foreign
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from datetime import datetime
 
-DB_NAME = "adopcion_mascotas"
+DB_NAME = "tarea2"
 DB_USERNAME = "cc5002"
 DB_PASSWORD = "programacionweb"
 DB_HOST = "localhost"

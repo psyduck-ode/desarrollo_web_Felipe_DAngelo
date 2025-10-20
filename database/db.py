@@ -2,6 +2,17 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, Foreign
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from datetime import datetime
 
+DB_NAME = "adopcion_mascotas"
+DB_USERNAME = "cc5002"
+DB_PASSWORD = "programacionweb"
+DB_HOST = "localhost"
+DB_PORT = 3306
+DATABASE_URL = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
+engine = create_engine(DATABASE_URL, echo=False)
+SessionLocal = sessionmaker(bind=engine)
+Base = declarative_base()
+
 def get_ultimos_avisos(limit=5):
     session = SessionLocal()
     avisos = session.query(AvisoAdopcion).order_by(AvisoAdopcion.fecha_publicacion.desc()).limit(limit).all()

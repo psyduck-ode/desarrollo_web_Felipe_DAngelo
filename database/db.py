@@ -15,15 +15,15 @@ Base = declarative_base()
 
 def get_ultimos_avisos(limit=5):
     session = SessionLocal()
-    avisos = session.query(AvisoAdopcion).order_by(AvisoAdopcion.fecha_publicacion.desc()).limit(limit).all()
+    avisos = session.query(aviso_adopcion).order_by(aviso_adopcion.fecha_publicacion.desc()).limit(limit).all()
     session.close()
     return avisos
 
 def get_avisos_paginados(page=1, per_page=5):
     session = SessionLocal()
     offset = (page - 1) * per_page
-    avisos = session.query(AvisoAdopcion).order_by(AvisoAdopcion.fecha_publicacion.desc()).offset(offset).limit(per_page).all()
-    total = session.query(AvisoAdopcion).count()
+    avisos = session.query(aviso_adopcion).order_by(aviso_adopcion.fecha_publicacion.desc()).offset(offset).limit(per_page).all()
+    total = session.query(aviso_adopcion).count()
     session.close()
     return avisos, total
 
@@ -52,14 +52,14 @@ def add_contacto(aviso_id, tipo, valor):
 
 def add_foto(aviso_id, ruta_archivo, nombre_archivo):
     session = SessionLocal()
-    foto = Foto(aviso_id=aviso_id, ruta_archivo=ruta_archivo, nombre_archivo=nombre_archivo)
+    foto = foto(aviso_id=aviso_id, ruta_archivo=ruta_archivo, nombre_archivo=nombre_archivo)
     session.add(foto)
     session.commit()
     session.close()
 
 def get_regiones():
     session = SessionLocal()
-    regiones = session.query(Region).order_by(Region.nombre).all()
+    regiones = session.query(region).order_by(region.nombre).all()
     session.close()
     return regiones
 

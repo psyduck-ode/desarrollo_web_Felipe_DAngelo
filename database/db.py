@@ -13,17 +13,68 @@ engine = create_engine(DATABASE_URL, echo=False)
 SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
 
+# Modelos
+class Region(Base):
+    __tablename__ = "region"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(200), nullable=False)
+    comunas = relationship("Comuna", back_populates="region")
+
+class Comuna(Base):
+    __tablename__ = "comuna"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(200), nullable=False)
+    region_id = Column(Integer, ForeignKey("region.id"), nullable=False)
+    region = relationship("Region", back_populates="comunas")
+
+class AvisoAdopcion(Base):
+    __tablename__ = "aviso_adopcion"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    region = Column(String(200), nullable=False)
+    comuna = Column(String(200), nullable=False)
+    sector = Column(String(100))
+    nombre_contacto = Column(String(200), nullable=False)
+    email = Column(String(100), nullable=False)
+    telefono = Column(String(15), nullable=False)
+    tipo_mascota = Column(Enum('perro', 'gato'), nullable=False)
+    cantidad = Column(Integer, nullable=False)
+    edad = Column(Integer, nullable=False)
+    medida_edad = Column(Enum('meses', 'años'), nullable=False)
+    fecha_entrega = Column(DateTime, nullable=False)
+    descripcion = Column(Text)
+    fecha_publicacion = Column(DateTime, default=datetime.now, nullable=False)
+    
+    fotos = relationship("Foto", back_populates="aviso", cascade="all, delete")
+    contactos = relationship("ContactarPor", back_populates="aviso", cascade="all, delete")
+
+class Foto(Base):
+    __tablename__ = "foto"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    ruta_archivo = Column(String(300), nullable=False)
+    nombre_archivo = Column(String(300), nullable=False)
+    aviso_id = Column(Integer, ForeignKey("aviso_adopcion.id"), nullable=False)
+    aviso = relationship("AvisoAdopcion", back_populates="fotos")
+
+class ContactarPor(Base):
+    __tablename__ = "contactar_por"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    tipo = Column(String(50), nullable=False)
+    valor = Column(String(50), nullable=False)
+    aviso_id = Column(Integer, ForeignKey("aviso_adopcion.id"), nullable=False)
+    aviso = relationship("AvisoAdopcion", back_populates="contactos")
+
+# Funciones
 def get_ultimos_avisos(limit=5):
     session = SessionLocal()
-    avisos = session.query(aviso_adopcion).order_by(aviso_adopcion.fecha_publicacion.desc()).limit(limit).all()
+    avisos = session.query(AvisoAdopcion).order_by(AvisoAdopcion.fecha_publicacion.desc()).limit(limit).all()
     session.close()
     return avisos
 
 def get_avisos_paginados(page=1, per_page=5):
     session = SessionLocal()
     offset = (page - 1) * per_page
-    avisos = session.query(aviso_adopcion).order_by(aviso_adopcion.fecha_publicacion.desc()).offset(offset).limit(per_page).all()
-    total = session.query(aviso_adopcion).count()
+    avisos = session.query(AvisoAdopcion).order_by(AvisoAdopcion.fecha_publicacion.desc()).offset(offset).limit(per_page).all()
+    total = session.query(AvisoAdopcion).count()
     session.close()
     return avisos, total
 
@@ -52,14 +103,14 @@ def add_contacto(aviso_id, tipo, valor):
 
 def add_foto(aviso_id, ruta_archivo, nombre_archivo):
     session = SessionLocal()
-    foto = foto(aviso_id=aviso_id, ruta_archivo=ruta_archivo, nombre_archivo=nombre_archivo)
+    foto = Foto(aviso_id=aviso_id, ruta_archivo=ruta_archivo, nombre_archivo=nombre_archivo)
     session.add(foto)
     session.commit()
     session.close()
 
 def get_regiones():
     session = SessionLocal()
-    regiones = session.query(region).order_by(region.nombre).all()
+    regiones = session.query(Region).order_by(Region.nombre).all()
     session.close()
     return regiones
 

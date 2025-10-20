@@ -19,17 +19,21 @@ class Region(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(200), nullable=False)
 
+    comunas = relationship("Comuna" , back_populates="region")
+
 class Comuna(Base):
     __tablename__ = "comuna"
     id = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(200), nullable=False)
     region_id = Column(Integer, ForeignKey("region.id"), nullable=False)
 
+    region = relationship("Region", back_populates="comunas")
+
 class AvisoAdopcion(Base):
     __tablename__ = "aviso_adopcion"
     id = Column(Integer, primary_key=True, autoincrement=True)
     fecha_ingreso = Column(DateTime, default = datetime.now, nullable=False)
-    comuna = Column(String(200), nullable=False)
+    comuna_id = Column(String(200), nullable=False)
     sector = Column(String(100))
     nombre = Column(String(200), nullable=False)
     email = Column(String(100), nullable=False)
@@ -39,7 +43,10 @@ class AvisoAdopcion(Base):
     edad = Column(Integer, nullable=False)
     unidad_medida = Column(Enum('meses', 'años'), nullable=False)
     fecha_entrega = Column(DateTime, nullable=False)
-    descripcion = Column(Text)
+    descripcion = Column(String(500))
+
+    fotos = relationship("Foto", back_populates="aviso", cascade="all, delete")
+    contactar_por = relationship("ContactarPor", back_populates="aviso", cascade="all, delete")
 
 class Foto(Base):
     __tablename__ = "foto"
@@ -48,12 +55,18 @@ class Foto(Base):
     nombre_archivo = Column(String(300), nullable=False)
     actividad_id = Column(Integer, ForeignKey("aviso_adopcion.id"), nullable=False)
 
+    actividad = relationship("AvisoAdopcion", back_populates="fotos")
+    aviso = relationship('AvisoAdopcion', back_populates='fotos')
+
 class ContactarPor(Base):
     __tablename__ = "contactar_por"
     id = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(50), nullable=False)
     identificador = Column(String(50), nullable=False)
     actividad_id = Column(Integer, ForeignKey("aviso_adopcion.id"), nullable=False)
+
+    actividad = relationship("AvisoAdopcion", back_populates="contactar_por")
+    aviso = relationship('AvisoAdopcion', back_populates='contactar_por')
 
 # Funciones
 def get_ultimos_avisos(limit=5):

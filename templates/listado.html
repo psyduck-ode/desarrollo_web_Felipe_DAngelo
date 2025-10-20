@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>Lista Adopcion</title>
-    <link rel ="stylesheet" href="css/styleList.css">
+    <title>Lista Adopción</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleList.css') }}">
 </head>
-    <!--Corresponde al punto 1 de la tarea; es la portada -->
 <body>
-    <h2>Listado de Adopción</h2>     
-    <!--Tabla que contiene las actividades-->
+    <h2>Listado de Adopción</h2>
+    
     <div>
         <table id="actividades-mas">
             <thead>
@@ -23,55 +21,48 @@
                     <th>Total fotos</th>
                 </tr>
             </thead>
-    <tr>
-        <td>2025-03-28<br>12:00</td>
-        <td>2025-03-30<br>14:00</td>
-        <td>Santiago</td>
-        <td>Estación Central</td>
-        <td>1 Gato <br>2 años</td>
-        <td>Fido Dido</td>
-        <td><img src="fotos/gato2años.jpeg" width="320" height="240"></td>
-    </tr>
-    <tr>
-        <td>2025-05-10<br>10:30</td>
-        <td>2025-05-12<br>12:00</td>
-        <td>La Florida</td>
-        <td>Parque</td>
-        <td>3 Perros <br>6 meses</td>
-        <td>Tom Bombadil</td>
-        <td><img src="fotos/3perros6meses.jpeg" width="320" height="240"></td>
-    </tr>
-    <tr>
-        <td>2025-06-15<br>09:00</td>
-        <td>2025-06-18<br>11:00</td>
-        <td>Peñalolén</td>
-        <td>Plaza</td>
-        <td>1 Perro <br>13 años</td>
-        <td>Fingolfin</td>
-        <td><img src="fotos/1perro13años.jpeg" width="320" height="240"></td>
-    </tr>
-    <tr>
-        <td>2025-07-20<br>16:45</td>
-        <td>2025-07-22<br>18:00</td>
-        <td>Puente Alto</td>
-        <td>Centro</td>
-        <td>2 Gatos <br>2 años</td>
-        <td>Fëanor</td>
-        <td><img src="fotos/2gatos2años.jpeg" width="320" height="240"></td>
-    </tr>
-    <tr>
-        <td>2025-08-05<br>14:15</td>
-        <td>2025-08-07<br>16:30</td>
-        <td>La Reina</td>
-        <td>Plaza</td>
-        <td>1 Gato <br>6 meses</td>
-        <td>Ignazio Avello</td>
-        <td><img src="fotos/gato6meses.jpeg" width="320" height="240"></td>
-    </tr>
-</tbody>
+            <tbody>
+                {% for aviso in avisos %}
+                <tr onclick="window.location.href=`{{ url_for('detalle_aviso', aviso_id=aviso.id) }}`" style="cursor: pointer;">
+                    <td>
+                        {{ aviso.fecha_publicacion.strftime('%Y-%m-%d') }}<br>
+                        {{ aviso.fecha_publicacion.strftime('%H:%M') }}
+                    </td>
+                    <td>
+                        {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>
+                        {{ aviso.fecha_entrega.strftime('%H:%M') }}
+                    </td>
+                    <td>{{ aviso.comuna }}</td>
+                    <td>{{ aviso.sector if aviso.sector else '-' }}</td>
+                    <td>
+                        {{ aviso.cantidad }} {{ 'Gato' if aviso.tipo_mascota == 'gato' else 'Perro' }}{{ 's' if aviso.cantidad > 1 else '' }}<br>
+                        {{ aviso.edad }} {{ aviso.medida_edad }}
+                    </td>
+                    <td>{{ aviso.nombre_contacto }}</td>
+                    <td>{{ aviso.fotos|length }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7">No hay avisos de adopción</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
-    <script src="js/redirect.js"></script>
-    <button type="button" id = "btn-volver-inicio-listado" onclick="window.location.href='index.html'"> Volver al inicio</button>
+    
+    <!-- Paginación -->
+    <div class="botones-navegacion" style="margin: 20px 0; text-align: center;">
+        {% if has_prev %}
+        <a href="{{ url_for('listado_avisos', page=page-1) }}" style="margin-right: 10px; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">« Anterior</a>
+        {% endif %}
+        
+        <span style="margin: 0 20px; font-weight: bold;">Página {{ page }} de {{ total_pages }}</span>
+        
+        {% if has_next %}
+        <a href="{{ url_for('listado_avisos', page=page+1) }}" style="margin-left: 10px; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Siguiente »</a>
+        {% endif %}
+    </div>
+    
+    <button type="button" id="btn-volver-inicio-listado" onclick="window.location.href=`{{ url_for('index') }}`">Volver al inicio</button>
 </body>
 </html>

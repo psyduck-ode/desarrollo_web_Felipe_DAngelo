@@ -2,25 +2,88 @@
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>Informacion Adopcipón</title>
-    <link rel ="stylesheet" href="css/styleList.css">
+    <title>Información Adopción</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleList.css') }}">
 </head>
 <body>
     <h2>Información Detallada de la adopción</h2>
-    <div>
-        <p id = "fecha-publicacion"> Fecha publicación</p><br>
-        <p id = "fecha-entrega">Fecha Entrega</p><br>
-        <p id = "comuna">Comuna</p><br>
-        <p id = "sector">Sector</p><br>
-        <p id = "C-T-E">Cantidad TIpo Edad</p><br>
-        <p id= "nombre-Contacto">Nombre Contacto</p><br>
-        <p id= "total-fotos">Total Fotos</p><br>
-
-    </div>
     
+    <div>
+        <p id="fecha-publicacion"><strong>Fecha publicación:</strong> {{ aviso.fecha_publicacion.strftime('%Y-%m-%d') }}<br>{{ aviso.fecha_publicacion.strftime('%H:%M') }}</p>
+        
+        <p id="fecha-entrega"><strong>Fecha Entrega:</strong> {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>{{ aviso.fecha_entrega.strftime('%H:%M') }}</p>
+        
+        <p id="comuna"><strong>Región:</strong> {{ aviso.region }}</p>
+        
+        <p id="comuna"><strong>Comuna:</strong> {{ aviso.comuna }}</p>
+        
+        <p id="sector"><strong>Sector:</strong> {{ aviso.sector if aviso.sector else '-' }}</p>
+        
+        <p id="C-T-E"><strong>Cantidad Tipo Edad:</strong> 
+            {{ aviso.cantidad }} {{ 'Gato' if aviso.tipo_mascota == 'gato' else 'Perro' }}{{ 's' if aviso.cantidad > 1 else '' }}<br>
+            {{ aviso.edad }} {{ aviso.medida_edad }}
+        </p>
+        
+        <p id="nombre-Contacto"><strong>Nombre Contacto:</strong> {{ aviso.nombre_contacto }}</p>
+        
+        <p><strong>Email:</strong> {{ aviso.email }}</p>
+        
+        <p><strong>Teléfono:</strong> {{ aviso.telefono }}</p>
+        
+        {% if aviso.contactos %}
+        <p><strong>Contactar por:</strong></p>
+        <ul>
+            {% for contacto in aviso.contactos %}
+            <li>{{ contacto.tipo }}: {{ contacto.valor }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        
+        {% if aviso.descripcion %}
+        <p><strong>Descripción:</strong></p>
+        <p>{{ aviso.descripcion }}</p>
+        {% endif %}
+        
+        {% if aviso.fotos %}
+        <p id="total-fotos"><strong>Total Fotos:</strong> {{ aviso.fotos|length }}</p>
+        <div>
+            {% for foto in aviso.fotos %}
+            <img src="{{ url_for('static', filename=foto.ruta_archivo.replace('static/', '')) }}" 
+                 width="320" height="240" style="margin: 10px; cursor: pointer;" alt="Foto mascota"
+                 onclick="ampliarImagen(this.src)">
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
 
-    <button type="button" id="btn-volver-a-la-tabla" onclick="window.location.href='listado.html'">Volver a la tabla</button>
-    <button type="button" id="btn-volver-al-inicio" onclick="window.location.href='index.html'">Volver al inicio</button>
-    <script src="js/llenarTabla.js"></script>
+    <button type="button" id="btn-volver-a-la-tabla" onclick="window.location.href=`{{ url_for('listado_avisos') }}`">Volver a la tabla</button>
+    <button type="button" id="btn-volver-al-inicio" onclick="window.location.href=`{{ url_for('index') }}`">Volver al inicio</button>
+
+    <script>
+    // Función para ampliar imágenes al hacer click
+    function ampliarImagen(src) {
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.backgroundColor = 'rgba(0,0,0,0.8)';
+        overlay.style.display = 'flex';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.zIndex = '1000';
+        overlay.style.cursor = 'pointer';
+
+        const imgGrande = document.createElement('img');
+        imgGrande.src = src;
+        imgGrande.style.maxWidth = '90%';
+        imgGrande.style.maxHeight = '90%';
+
+        overlay.onclick = () => overlay.remove();
+        overlay.appendChild(imgGrande);
+        document.body.appendChild(overlay);
+    }
+    </script>
 </body>
 </html>

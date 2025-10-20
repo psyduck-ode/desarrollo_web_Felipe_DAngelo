@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html lang = es>
+<html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>Actividades Recreativas</title>
-    <link  rel ="stylesheet" href="css/styleList.css">
+    <title>Estadísticas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleList.css') }}">
 </head>
 <body>
-    <h2>Estas son las estadisticas de las actividades</h2>
+    <h2>Estas son las estadísticas de las adopciones</h2>
 
-    <img src="fotos/grafico_lineas.jpeg" alt="Grafico 1" width="600" height="400"><br>
-    <img src="fotos/grafico_torta(1).jpeg" alt="Grafico 2" width="400" height="500"><br>
-    <img src="fotos/grafico_barras.jpeg" alt="Grafico3" width="500" height="400"><br>
+    <!-- Placeholder para cuando implementes la Tarea 3 -->
+    <p>Gráficos estadísticos proximamente...</p>
+    
+    <!-- Puedes usar tus imágenes estáticas por ahora -->
+    <img src="{{ url_for('static', filename='fotos/grafico_lineas.jpeg') }}" alt="Grafico 1" width="600" height="400"><br>
+    <img src="{{ url_for('static', filename='fotos/grafico_torta(1).jpeg') }}" alt="Grafico 2" width="400" height="500"><br>
+    <img src="{{ url_for('static', filename='fotos/grafico_barras.jpeg') }}" alt="Grafico 3" width="500" height="400"><br>
 
-    <button id="btn-volver-al-inicio-estadisticas" onclick="window.location.href='index.html'">Volver al inicio</button>
+    <button id="btn-volver-al-inicio-estadisticas" onclick="window.location.href=`{{ url_for('index') }}`">Volver al inicio</button>
 </body>
 </html>

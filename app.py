@@ -92,16 +92,15 @@ def agregar_aviso():
         # Si todo está bien, guardar en base de datos
         try:
             data = {
-                "region": form.get("select-region"),
-                "comuna": form.get("select-comuna"),
+                "comuna_id": form.get("select-comuna"),
                 "sector": form.get("input-sector", "").strip() or None,
-                "nombre_contacto": form.get("nombre"),
+                "nombre": form.get("nombre"),
                 "email": form.get("email"),
-                "telefono": form.get("numTel"),
-                "tipo_mascota": form.get("select-tipo"),
+                "celular": form.get("numTel"),
+                "tipo": form.get("select-tipo"),
                 "cantidad": int(form.get("input-cantidad")),
                 "edad": int(form.get("input-edad")),
-                "medida_edad": form.get("select-medidaEdad"),
+                "unidad_medida": form.get("select-medidaEdad"),
                 "fecha_entrega": datetime.strptime(form.get("fecha-disponible-entrega"), "%Y-%m-%dT%H:%M"),
                 "descripcion": form.get("input-descripcion", "").strip() or None
             }

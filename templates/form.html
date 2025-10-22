@@ -95,8 +95,8 @@
             <label for="select-medidaEdad">Medida de edad</label>
             <select name="select-medidaEdad" id="select-medidaEdad" required>
                 <option value="">Seleccione una medida</option>
-                <option value="meses" {% if data.get('select-medidaEdad') == 'meses' %}selected{% endif %}>Meses</option>
-                <option value="años" {% if data.get('select-medidaEdad') == 'años' %}selected{% endif %}>Años</option>
+                <option value="m" {% if data.get('select-medidaEdad') == 'm' %}selected{% endif %}>Meses</option>
+                <option value="a" {% if data.get('select-medidaEdad') == 'a' %}selected{% endif %}>Años</option>
             </select><br>
 
             <label for="fecha-disponible-entrega">Fecha disponible para la entrega</label>

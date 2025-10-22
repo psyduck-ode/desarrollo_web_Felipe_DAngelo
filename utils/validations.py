@@ -50,7 +50,7 @@ def validate_edad(edad):
         return False
 
 def validate_medida_edad(medida):
-    return medida in ['meses', 'años']
+    return medida in ['m', 'a']
 
 def validate_fecha_entrega(fecha_str):
     if not fecha_str:

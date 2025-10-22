@@ -40,7 +40,7 @@
                         {{ aviso.fecha_publicacion.strftime('%Y-%m-%d') }}<br>
                         {{ aviso.fecha_publicacion.strftime('%H:%M') }}
                     </td>
-                    <td>{{ aviso.comuna }}</td>
+                    <td>{{ aviso.comuna.nombre }}</td>
                     <td>{{ aviso.sector if aviso.sector else '-' }}</td>
                     <td>
                         {{ aviso.cantidad }} {{ 'Gato' if aviso.tipo_mascota == 'gato' else 'Perro' }}{{ 's' if aviso.cantidad > 1 else '' }}<br>

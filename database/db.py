@@ -18,22 +18,22 @@ class Region(Base):
     __tablename__ = "region"
     id = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(200), nullable=False)
-
-    comunas = relationship("Comuna" , back_populates="region")
+    
+    comunas = relationship("Comuna", back_populates="region")
 
 class Comuna(Base):
     __tablename__ = "comuna"
     id = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(200), nullable=False)
     region_id = Column(Integer, ForeignKey("region.id"), nullable=False)
-
+    
     region = relationship("Region", back_populates="comunas")
 
 class AvisoAdopcion(Base):
     __tablename__ = "aviso_adopcion"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    fecha_ingreso = Column(DateTime, default = datetime.now, nullable=False)
-    comuna_id = Column(String(200), nullable=False)
+    fecha_ingreso = Column(DateTime, default=datetime.now, nullable=False)
+    comuna_id = Column(Integer, ForeignKey("comuna.id"), nullable=False)  # ← AGREGAR FK
     sector = Column(String(100))
     nombre = Column(String(200), nullable=False)
     email = Column(String(100), nullable=False)
@@ -41,10 +41,11 @@ class AvisoAdopcion(Base):
     tipo = Column(Enum('perro', 'gato'), nullable=False)
     cantidad = Column(Integer, nullable=False)
     edad = Column(Integer, nullable=False)
-    unidad_medida = Column(Enum('meses', 'años'), nullable=False)
+    unidad_medida = Column(Enum('m', 'a'), nullable=False)
     fecha_entrega = Column(DateTime, nullable=False)
     descripcion = Column(String(500))
-
+    
+    comuna = relationship("Comuna")  # ← NUEVA RELACIÓN
     fotos = relationship("Foto", back_populates="aviso", cascade="all, delete")
     contactar_por = relationship("ContactarPor", back_populates="aviso", cascade="all, delete")
 
@@ -54,9 +55,8 @@ class Foto(Base):
     ruta_archivo = Column(String(300), nullable=False)
     nombre_archivo = Column(String(300), nullable=False)
     actividad_id = Column(Integer, ForeignKey("aviso_adopcion.id"), nullable=False)
-
-    actividad = relationship("AvisoAdopcion", back_populates="fotos")
-    aviso = relationship('AvisoAdopcion', back_populates='fotos')
+    
+    aviso = relationship("AvisoAdopcion", back_populates="fotos")
 
 class ContactarPor(Base):
     __tablename__ = "contactar_por"
@@ -64,9 +64,8 @@ class ContactarPor(Base):
     nombre = Column(String(50), nullable=False)
     identificador = Column(String(50), nullable=False)
     actividad_id = Column(Integer, ForeignKey("aviso_adopcion.id"), nullable=False)
-
-    actividad = relationship("AvisoAdopcion", back_populates="contactar_por")
-    aviso = relationship('AvisoAdopcion', back_populates='contactar_por')
+    
+    aviso = relationship("AvisoAdopcion", back_populates="contactar_por")
 
 # Funciones
 def get_ultimos_avisos(limit=5):
@@ -99,19 +98,25 @@ def create_aviso(data):
     session.close()
     return aviso_id
 
-def add_contacto(aviso_id, tipo, valor):
+def add_contacto(aviso_id, nombre, identificador):  # ← CAMBIAR PARÁMETROS
     session = SessionLocal()
-    contacto = ContactarPor(aviso_id=aviso_id, tipo=tipo, valor=valor)
+    contacto = ContactarPor(actividad_id=aviso_id, nombre=nombre, identificador=identificador)  # ← actividad_id
     session.add(contacto)
     session.commit()
     session.close()
 
 def add_foto(aviso_id, ruta_archivo, nombre_archivo):
     session = SessionLocal()
-    foto = Foto(aviso_id=aviso_id, ruta_archivo=ruta_archivo, nombre_archivo=nombre_archivo)
+    foto = Foto(actividad_id=aviso_id, ruta_archivo=ruta_archivo, nombre_archivo=nombre_archivo)  # ← actividad_id
     session.add(foto)
     session.commit()
     session.close()
+
+def get_comuna_by_nombre(nombre_comuna):  # ← NUEVA FUNCIÓN
+    session = SessionLocal()
+    comuna = session.query(Comuna).filter(Comuna.nombre == nombre_comuna).first()
+    session.close()
+    return comuna
 
 def get_regiones():
     session = SessionLocal()

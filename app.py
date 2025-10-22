@@ -91,8 +91,16 @@ def agregar_aviso():
         
         # Si todo está bien, guardar en base de datos
         try:
+            # OBTENER ID DE LA COMUNA
+            comuna_nombre = form.get("select-comuna")
+            comuna = db.get_comuna_by_nombre(comuna_nombre)
+            
+            if not comuna:
+                errores["select-comuna"] = "Comuna inválida"
+                return render_template("form.html", errores=errores, data=form), 400
+            
             data = {
-                "comuna_id": form.get("select-comuna"),
+                "comuna_id": comuna.id,  # ← USAR ID EN LUGAR DE NOMBRE
                 "sector": form.get("input-sector", "").strip() or None,
                 "nombre": form.get("nombre"),
                 "email": form.get("email"),
@@ -108,9 +116,9 @@ def agregar_aviso():
             # Crear aviso
             aviso_id = db.create_aviso(data)
             
-            # Guardar contactos
+            # Guardar contactos (CAMBIAR PARÁMETROS)
             for tipo, valor in contactos:
-                db.add_contacto(aviso_id, tipo, valor)
+                db.add_contacto(aviso_id, tipo, valor)  # nombre, identificador
             
             # Guardar fotos
             foto1 = files.get('input-foto')
@@ -131,6 +139,12 @@ def agregar_aviso():
             
             # Redirigir a portada con mensaje de éxito
             return redirect(url_for('index', mensaje='Aviso agregado exitosamente'))
+            
+        except Exception as e:
+            print(f"Error al guardar: {e}")
+            errores["general"] = "Error al guardar el aviso. Intente nuevamente."
+            return render_template("form.html", errores=errores, data=form), 500
+
             
         except Exception as e:
             print(f"Error al guardar: {e}")

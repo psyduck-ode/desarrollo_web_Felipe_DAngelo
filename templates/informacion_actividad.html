@@ -13,9 +13,9 @@
         
         <p id="fecha-entrega"><strong>Fecha Entrega:</strong> {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>{{ aviso.fecha_entrega.strftime('%H:%M') }}</p>
         
-        <p id="comuna"><strong>Región:</strong> {{ aviso.region }}</p>
+        <p id="comuna"><strong>Región:</strong> {{ aviso.comuna.region.nombre }}</p>
         
-        <p id="comuna"><strong>Comuna:</strong> {{ aviso.comuna }}</p>
+        <p id="comuna"><strong>Comuna:</strong> {{ aviso.comuna.nombre }}</p>
         
         <p id="sector"><strong>Sector:</strong> {{ aviso.sector if aviso.sector else '-' }}</p>
         

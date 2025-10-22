@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, Enum, Text
-from sqlalchemy.orm import sessionmaker, declarative_base, relationship
+from sqlalchemy.orm import sessionmaker, declarative_base, relationship, joinedload
 from datetime import datetime
 
 DB_NAME = "tarea2"
@@ -33,7 +33,7 @@ class AvisoAdopcion(Base):
     __tablename__ = "aviso_adopcion"
     id = Column(Integer, primary_key=True, autoincrement=True)
     fecha_ingreso = Column(DateTime, default=datetime.now, nullable=False)
-    comuna_id = Column(Integer, ForeignKey("comuna.id"), nullable=False)  # ← AGREGAR FK
+    comuna_id = Column(Integer, ForeignKey("comuna.id"), nullable=False)  
     sector = Column(String(100))
     nombre = Column(String(200), nullable=False)
     email = Column(String(100), nullable=False)
@@ -45,7 +45,7 @@ class AvisoAdopcion(Base):
     fecha_entrega = Column(DateTime, nullable=False)
     descripcion = Column(String(500))
     
-    comuna = relationship("Comuna")  # ← NUEVA RELACIÓN
+    comuna = relationship("Comuna") 
     fotos = relationship("Foto", back_populates="aviso", cascade="all, delete")
     contactar_por = relationship("ContactarPor", back_populates="aviso", cascade="all, delete")
 
@@ -70,14 +70,29 @@ class ContactarPor(Base):
 # Funciones
 def get_ultimos_avisos(limit=5):
     session = SessionLocal()
-    avisos = session.query(AvisoAdopcion).order_by(AvisoAdopcion.fecha_ingreso.desc()).limit(limit).all()
+    avisos = (
+        session.query(AvisoAdopcion)
+        .options(
+            joinedload(AvisoAdopcion.comuna),
+            joinedload(AvisoAdopcion.fotos)) 
+        .order_by(AvisoAdopcion.fecha_ingreso.desc())
+        .limit(limit)
+        .all()
+    )
     session.close()
     return avisos
 
 def get_avisos_paginados(page=1, per_page=5):
     session = SessionLocal()
     offset = (page - 1) * per_page
-    avisos = session.query(AvisoAdopcion).order_by(AvisoAdopcion.fecha_ingreso.desc()).offset(offset).limit(per_page).all()
+    avisos = (
+        session.query(AvisoAdopcion)
+        .options(joinedload(AvisoAdopcion.comuna), joinedload(AvisoAdopcion.fotos))
+        .order_by(AvisoAdopcion.fecha_ingreso.desc())
+        .offset(offset)
+        .limit(per_page)
+        .all()
+    )
     total = session.query(AvisoAdopcion).count()
     session.close()
     return avisos, total

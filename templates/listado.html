@@ -25,8 +25,8 @@
                 {% for aviso in avisos %}
                 <tr onclick="window.location.href=`{{ url_for('detalle_aviso', aviso_id=aviso.id) }}`" style="cursor: pointer;">
                     <td>
-                        {{ aviso.fecha_publicacion.strftime('%Y-%m-%d') }}<br>
-                        {{ aviso.fecha_publicacion.strftime('%H:%M') }}
+                        {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>
+                        {{ aviso.fecha_entrega.strftime('%H:%M') }}
                     </td>
                     <td>
                         {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>

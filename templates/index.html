@@ -37,8 +37,8 @@
                 {% for aviso in avisos %}
                 <tr>
                     <td>
-                        {{ aviso.fecha_publicacion.strftime('%Y-%m-%d') }}<br>
-                        {{ aviso.fecha_publicacion.strftime('%H:%M') }}
+                        {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>
+                        {{ aviso.fecha_entrega.strftime('%H:%M') }}
                     </td>
                     <td>{{ aviso.comuna.nombre }}</td>
                     <td>{{ aviso.sector if aviso.sector else '-' }}</td>

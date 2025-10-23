@@ -120,3 +120,21 @@ def validar_extension_foto(filename):
     """Valida que la extensión sea jpg, jpeg o png"""
     extensiones_permitidas = {'jpg', 'jpeg', 'png', 'gif'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in extensiones_permitidas
+
+def validate_nombre_comentario(nombre):
+    if not nombre:
+        return False
+    nombre = nombre.strip()
+    if 3 <= len(nombre) <= 80:
+        return True
+    else:
+        return False
+    
+def valdiate_texto_comentario(texto):
+    if not texto:
+        return False
+    texto = texto.strip()
+    if len(texto) >=5:
+        return True
+    else:
+        return False

@@ -168,3 +168,25 @@ def get_comunas_by_region(region_nombre):
         comunas = []
     session.close()
     return comunas
+
+def get_comentarios_by_aviso(aviso_id):
+    session = SessionLocal()
+    comentarios = session.query(Comentario).filter(
+        Comentario.aviso_id == aviso_id
+    ).order_by(Comentario.fecha.desc()).all()
+    session.close()
+    return comentarios
+
+def add_comentario(nombre, texto, aviso_id):
+    session = SessionLocal()
+    comentario = Comentario(
+        nombre=nombre,
+        texto=texto,
+        aviso_id=aviso_id
+    )
+    session.add(comentario)
+    session.commit()
+    session.refresh(comentario)
+    comentario_id = comentario.id
+    session.close()
+    return comentario_id

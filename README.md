@@ -21,6 +21,6 @@ Para comenzar esta tarea, le pedi ayuda a chatGPT para que me guiara para crear 
 # Tarea 3
 Para esta tarea utilice IA para realizar lo de la tarea 2 y así no atrazarme tanto. Por otra parte, aquí comienza la tarea 3 en donde se verá el tema de los gráficos y estadísticas de la app web. En esta tarea, ne la parte de "Ver listado de adopciones" -> ver información adicionañ, las fotos no se visualizan y esto no lo voy a arreglar ahora, dado que no es lo que se va a evaluar en la tarea. Complicaciones en la parte de comentarios:
 1.- Hacer que se mostraran los comentarios cargadas, ya que se me olvido agregar la lista en el html, por lo que nunca aparecian.
-2.- No sabía como hacer un mensaje de error/exito bonito, así que tuve que buscar por la web el como hacerlo.
+2.- No sabía como hacer un mensaje de error/exito bonito, así que tuve que buscar por la web el como hacerlo. 
 
-
+Ahora bien, para la parte de comentarios ocupare highcharts dado que es el que usamos en el auxiliar y por ende, espero, que sea más fácil de realizar. La unica complicacion que tuve fue ver si rellenaba la base de datos con datos falsos, ocupaba datos generados aleatoriamente o la dejaba como está.

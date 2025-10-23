@@ -188,5 +188,42 @@ def detalle_aviso(aviso_id):
 def estadisticas():
     return render_template("estadisticas.html")
 
+#Tarea 3
+@app.route("/api/avisos/<int:aviso_id>/comentarios", methods=["GET"])
+def obtener_comentarios(aviso_id):
+    comentarios = db.get_comentarios_by_aviso(aviso_id)
+    return jsonify([{
+        'id': c.id,
+        'nombre': c.nombre,
+        'texto': c.texto,
+        'fecha': c.fecha.strftime('%Y-%m-%d %H:%M:%S')
+    } for c in comentarios])
+    
+
+@app.route("/api/avisos/<int:aviso_id>/comentarios", methods=["POST"])
+def agregar_comentario(aviso_id):   
+    data = request.get_json()
+    nombre = (data.get('nombre') or '').strip()
+    texto = (data.get('texto') or '').strip()    
+    errores = {}
+        
+    if not nombre or len(nombre) < 3 or len(nombre) > 80:
+        errores['nombre'] = 'El nombre debe tener entre 3 y 80 caracteres'
+        
+    if not texto or len(texto) < 5 or len(texto) > 300:
+        errores['texto'] = 'El comentario debe tener entre 5 y 300 caracteres'
+        
+    if errores:
+        return jsonify({'errores': errores}), 400
+        
+    comentario_id = db.add_comentario(nombre, texto, aviso_id)
+        
+    return jsonify({
+        'mensaje': 'Comentario agregado exitosamente',
+        'id': comentario_id
+    }), 201
+        
+
+
 if __name__ == "__main__":
     app.run(debug=True)

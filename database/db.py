@@ -180,9 +180,9 @@ def get_comentarios_by_aviso(aviso_id):
 def add_comentario(nombre, texto, aviso_id):
     session = SessionLocal()
     comentario = Comentario(
-        nombre=nombre,
-        texto=texto,
-        aviso_id=aviso_id
+        nombre = nombre,
+        texto = texto,
+        aviso_id = aviso_id
     )
     session.add(comentario)
     session.commit()

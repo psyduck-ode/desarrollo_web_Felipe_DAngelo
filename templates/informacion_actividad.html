@@ -55,28 +55,26 @@
         </div>
         {% endif %}
     <!--TArea 3-->>
-    </div>
-        <div id="comentarios-section" data-aviso-id="{{ aviso.id }}">
-        <h3>Comentarios</h3>
-        <div id="comentarios-lista">
-            <p>Cargando comentarios...</p>
-        </div>
+        <div id="comentarios-section" data-aviso-id="{{ aviso.id }}" style="margin-top: 30px; border-top: 2px solid #ccc; padding-top: 20px;">
+            <h3>Comentarios</h3>
+            
+            <div id="comentarios-lista" style="margin-top: 20px;"></div>
 
-        <!--Formualrio de agregar comentario-->>
-        <h4>Agregar un comentario</h4>
-        <div id="comentario-errores" style="display: none; background-color: #ffdddd; padding: 10px; margin: 10px 0;">
+        <h4>Agregar comentario</h4>
+        <div id="comentario-errores" style="display:none; color:red; margin-bottom:10px;">
             <ul id="comentario-errores-lista"></ul>
         </div>
-        
         <form id="comentario-form">
-            <label for="comentario-nombre">Nombre:</label><br>
-            <input type="text" id="comentario-nombre" name="nombre" minlength="3" maxlength="80" required><br><br>
+            <label>Nombre:</label><br>
+            <input type="text" id="comentario-nombre" maxlength="80" required><br><br>
             
-            <label for="comentario-texto">Comentario:</label><br>
-            <textarea id="comentario-texto" name="texto" rows="4" cols="50" minlength="5" maxlength="300" required></textarea><br><br>
+            <label>Comentario:</label><br>
+            <textarea id="comentario-texto" rows="4" cols="50" maxlength="300" required></textarea><br><br>
             
             <button type="button" id="btn-agregar-comentario">Agregar comentario</button>
         </form>
+
+
     </div>
 
     <button type="button" id="btn-volver-a-la-tabla" onclick="window.location.href=`{{ url_for('listado_avisos') }}`">Volver a la tabla</button>
@@ -108,5 +106,8 @@
         document.body.appendChild(overlay);
     }
     </script>
+    <!--Tarea 3-->
+    <script src="{{ url_for('static', filename='js/comentarios.js') }}"></script>
+
 </body>
 </html>

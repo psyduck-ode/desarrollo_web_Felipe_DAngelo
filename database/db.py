@@ -99,7 +99,16 @@ def get_avisos_paginados(page=1, per_page=5):
 
 def get_aviso_by_id(aviso_id):
     session = SessionLocal()
-    aviso = session.query(AvisoAdopcion).get(aviso_id)
+    aviso = (
+        session.query(AvisoAdopcion)
+        .options(
+            joinedload(AvisoAdopcion.comuna).joinedload(Comuna.region),
+            joinedload(AvisoAdopcion.fotos),
+            joinedload(AvisoAdopcion.contactar_por)
+        )
+        .filter(AvisoAdopcion.id == aviso_id)
+        .first()
+    )
     session.close()
     return aviso
 

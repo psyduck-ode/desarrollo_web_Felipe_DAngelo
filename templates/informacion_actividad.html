@@ -13,7 +13,7 @@
         
         <p id="fecha-entrega"><strong>Fecha Entrega:</strong> {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>{{ aviso.fecha_entrega.strftime('%H:%M') }}</p>
         
-        <p id="comuna"><strong>Región:</strong> {{ aviso.comuna.region.nombre }}</p>
+        <p id="region"><strong>Región:</strong> {{ aviso.comuna.region.nombre }}</p>
         
         <p id="comuna"><strong>Comuna:</strong> {{ aviso.comuna.nombre }}</p>
         
@@ -46,15 +46,16 @@
         
         {% if aviso.fotos %}
         <p id="total-fotos"><strong>Total Fotos:</strong> {{ aviso.fotos|length }}</p>
+    </div>
         <div>
             {% for foto in aviso.fotos %}
-            <img src="{{ url_for('static', filename=foto.ruta_archivo.replace('static/', '')) }}" 
+            <img src="static/', '" 
                  width="320" height="240" style="margin: 10px; cursor: pointer;" alt="Foto mascota"
                  onclick="ampliarImagen(this.src)">
             {% endfor %}
         </div>
         {% endif %}
-    <!--TArea 3-->>
+        <!--TArea 3-->>
         <div id="comentarios-section" data-aviso-id="{{ aviso.id }}" style="margin-top: 30px; border-top: 2px solid #ccc; padding-top: 20px;">
             <h3>Comentarios</h3>
             

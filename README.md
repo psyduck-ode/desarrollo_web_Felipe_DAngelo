@@ -27,4 +27,4 @@ Ahora bien, para la parte de comentarios ocupare highcharts dado que es el que u
 Complicaciones:
 1- No sabía como obtener los datos por cada mes, así que tuve que indagar por internet y ver cuales formas existian para hacerlo.
 2.-No sabía como crear los otros graficos(torta y barras) así tuve que bsucar ayuda extra
-3.- Me demoró entender como arreglar los htmls con las herramientas del enunciado, lo cual me tomo más tiempo del esperado
+3.- Me demoró entender como arreglar los htmls con las herramientas del enunciado, lo cual me tomo más tiempo del esperado, sobretodo el form.html

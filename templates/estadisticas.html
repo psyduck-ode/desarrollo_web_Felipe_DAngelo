@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Estadísticas</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleList.css') }}">
+    <link rel="stylesheet"  href="static/css/styleList.css">
     <style>
         .chart-container {
             margin: 30px auto;
@@ -87,7 +87,7 @@
     </div>
 
     <button id="btn-volver-al-inicio-estadisticas" onclick="window.location.href=`{{ url_for('index') }}`">Volver al inicio</button>
-    <script src="{{ url_for('static', filename= 'js/graficos.js') }}" defer></script>
+    <script src="static/js/graficos.js" defer></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
 
 </body>

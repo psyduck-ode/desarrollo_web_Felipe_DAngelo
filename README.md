@@ -26,4 +26,5 @@ Para esta tarea utilice IA para realizar lo de la tarea 2 y así no atrazarme ta
 Ahora bien, para la parte de comentarios ocupare highcharts dado que es el que usamos en el auxiliar y por ende, espero, que sea más fácil de realizar. La unica complicacion que tuve fue ver si rellenaba la base de datos con datos falsos, ocupaba datos generados aleatoriamente o la dejaba como está.
 Complicaciones:
 1- No sabía como obtener los datos por cada mes, así que tuve que indagar por internet y ver cuales formas existian para hacerlo.
-2.-No sabía como crear los otros graficos(torta y barras) así tuve que bsucar ayuda extra 
+2.-No sabía como crear los otros graficos(torta y barras) así tuve que bsucar ayuda extra
+3.- Me demoró entender como arreglar los htmls con las herramientas del enunciado, lo cual me tomo más tiempo del esperado

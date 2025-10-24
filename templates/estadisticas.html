@@ -3,14 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Estadísticas</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleList.css') }}">
-</head>
-<body>
-    <h2>Estas son las estadísticas de las adopciones</h2>
-
-    <!-- Placeholder para cuando implementes la Tarea 3 -->
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    
+    <link rel="stylesheet" href="url_for('static',filename='css/styleList.css')">
     <style>
         .chart-container {
             margin: 30px auto;
@@ -62,7 +55,12 @@
             text-align: center;
         }
     </style>
+</head>
+<body>
+    <h2>Estas son las estadísticas de las adopciones</h2>
 
+    <!-- Placeholder para cuando implementes la Tarea 3 -->
+    
     <h1 style="text-align: center;">Estadísticas de Adopciones</h1>
     
     <!-- Puedes usar tus imágenes estáticas por ahora -->
@@ -88,7 +86,8 @@
     </div>
 
     <button id="btn-volver-al-inicio-estadisticas" onclick="window.location.href=`{{ url_for('index') }}`">Volver al inicio</button>
-    <script src="{{ url_for('static', filename= 'js/graficos.js') }}" defer></script>
+    <script src="url_for('static',filename='js/graficos.js')" defer></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
 
 </body>
 </html>

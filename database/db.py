@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, Enum, Text
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, Enum, func
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship, joinedload
 from datetime import datetime
 
@@ -190,3 +190,59 @@ def add_comentario(nombre, texto, aviso_id):
     comentario_id = comentario.id
     session.close()
     return comentario_id
+
+def avisos_por_dia():
+    session = SessionLocal()
+
+    resultados = session.query(
+        func.date(AvisoAdopcion.fecha_ingreso).label('fecha'),
+        func.count(AvisoAdopcion.id).label('cantidad')
+    ).group_by(
+        func.date(AvisoAdopcion.fecha_ingreso)
+    ).order_by('fecha').all()
+    
+    fechas = [r.fecha.strftime('%Y-%m-%d') for r in resultados]
+    cantidades = [r.cantidad for r in resultados]
+    
+    session.close()
+    return fechas, cantidades
+
+def avisos_por_tipo():
+    session = SessionLocal()
+
+    resultados = session.query(
+        AvisoAdopcion.tipo,
+        func.count(AvisoAdopcion.id).label('cantidad')
+    ).group_by(AvisoAdopcion.tipo).all()
+    
+    tipos = [r.tipo.capitalize() for r in resultados]
+    cantidades = [r.cantidad for r in resultados]
+    
+    session.close()
+    return tipos, cantidades
+
+def avisos_por_mes_tipo():
+    session = SessionLocal()
+    from sqlalchemy import func, extract
+    
+    resultados = session.query(
+        extract('month', AvisoAdopcion.fecha_ingreso).label('mes'),
+        AvisoAdopcion.tipo,
+        func.count(AvisoAdopcion.id).label('cantidad')
+    ).group_by('mes', AvisoAdopcion.tipo).order_by('mes').all()
+    
+    # Organizar datos por mes
+    meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
+             'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    perros = [0] * 12
+    gatos = [0] * 12
+    
+    for r in resultados:
+        mes_idx = int(r.mes) - 1
+        if r.tipo == 'perro':
+            perros[mes_idx] = r.cantidad
+        else:
+            gatos[mes_idx] = r.cantidad
+    
+    session.close()
+    return meses, perros, gatos

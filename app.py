@@ -224,6 +224,30 @@ def agregar_comentario(aviso_id):
     }), 201
         
 
+@app.route("/api/estadisticas/avisos-por-dia", methods=["GET"])
+def estadisticas_avisos_por_dia():
+    fechas, cantidades = db.avisos_por_dia()
+    return jsonify({
+        'fechas': fechas,
+        'cantidades': cantidades
+    })
+
+@app.route("/api/estadisticas/avisos-por-tipo", methods=["GET"])
+def estadistica_avisos_por_tipo():
+    tipos, cantidades = db.avisos_por_tipo()
+    return jsonify({
+        'tipos': tipos,
+        'cantidades': cantidades
+    })
+
+@app.route("/api/estadisticas/avisos-por-mes-tipo", methods=["GET"])
+def estadistica_avisos_por_mes_tipo():
+    meses, perros, gatos = db.avisos_por_mes_tipo()
+    return jsonify({
+        'meses': meses,
+        'perros': perros,
+        'gatos': gatos
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)

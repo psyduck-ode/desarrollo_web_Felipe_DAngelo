@@ -28,3 +28,7 @@ Complicaciones:
 1- No sabía como obtener los datos por cada mes, así que tuve que indagar por internet y ver cuales formas existian para hacerlo.
 2.-No sabía como crear los otros graficos(torta y barras) así tuve que bsucar ayuda extra
 3.- Me demoró entender como arreglar los htmls con las herramientas del enunciado, lo cual me tomo más tiempo del esperado, sobretodo el form.html
+
+
+# Tarea 4
+Para esta tarea vamos a intentar de arreglar los htmls previos para que no den errores, sin embargo esto será lo último que se realizara dado que no es lo "principal" a evaluar, por lo tanto será lo último que se realice para esta entrega.

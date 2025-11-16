@@ -39,3 +39,4 @@ Para llegar a la pagiina principal, utilizar el siguiente link para pegarlo en e
 
 Ahí podrá ver app web. Ahora bien, cabe aclarar que realizar todo desde 0 en java, es una tarea tediosa si se hace a mano propia. Por esto me aproveche y ocupe la IA para inicializar el proyecto y pasarlo todo a java. Obviamente la parte evaluada será a puño y sudor mío, pero no quita que requiere bastante tiempo el pasar de flask a java.
  
+Para hacer la tabla de evaluaciones se dicio hacer en un html diferente al de listado de adopciones, ya que si se hacia en este iba a quedar saturado de información, además de que resultaba más fácil crear una tabla nueva con esas evaluaciones.

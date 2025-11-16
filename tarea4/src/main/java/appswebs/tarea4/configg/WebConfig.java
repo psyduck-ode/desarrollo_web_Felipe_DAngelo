@@ -1,4 +1,4 @@
-package appswebs.tarea4.config;
+package appswebs.tarea4.configg;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

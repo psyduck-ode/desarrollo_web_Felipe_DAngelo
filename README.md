@@ -32,3 +32,10 @@ Complicaciones:
 
 # Tarea 4
 Para esta tarea vamos a intentar de arreglar los htmls previos para que no den errores, sin embargo esto será lo último que se realizara dado que no es lo "principal" a evaluar, por lo tanto será lo último que se realice para esta entrega. Al ver el aux 10, se noto que había que hacer hartas modificaciones para pasar de flask a django y que no se iban a evaluar para esta entrega, así que decidi hacerlas con IA(migración de flask a Java).
+
+Para llegar a la pagiina principal, utilizar el siguiente link para pegarlo en el url:
+
+                                           http://localhost:8080/
+
+Ahí podrá ver app web. Ahora bien, cabe aclarar que realizar todo desde 0 en java, es una tarea tediosa si se hace a mano propia. Por esto me aproveche y ocupe la IA para inicializar el proyecto y pasarlo todo a java. Obviamente la parte evaluada será a puño y sudor mío, pero no quita que requiere bastante tiempo el pasar de flask a java.
+ 

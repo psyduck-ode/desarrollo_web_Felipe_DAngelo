@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Estadísticas</title>
+    <link rel="stylesheet" th:href="@{/css/styleList.css}">
+    <style>
+        .chart-container {
+            margin: 30px auto;
+            max-width: 900px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .chart-div {
+            min-height: 400px;
+            background-color: white;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .btn-volver {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 12px 30px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-volver:hover {
+            background-color: #45a049;
+        }
+        
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Estadísticas de Adopciones</h1>
+    
+    <div class="chart-container">
+        <h2>Cantidad de avisos de adopción por día</h2>
+        <div id="grafico-lineas" class="chart-div">
+            <div class="loading">Cargando gráfico...</div>
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <h2>Total de avisos por tipo de mascota</h2>
+        <div id="grafico-torta" class="chart-div">
+            <div class="loading">Cargando gráfico...</div>
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <h2>Avisos de adopción por mes y tipo</h2>
+        <div id="grafico-barras" class="chart-div">
+            <div class="loading">Cargando gráfico...</div>
+        </div>
+    </div>
+    
+    <div class="center">
+        <button id="btn-volver-al-inicio-estadisticas" class="btn-volver" th:onclick="|window.location.href='@{/}'|">Volver al inicio</button>
+    </div>
+    
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script th:src="@{/js/graficos.js}"></script>
+</body>
+</html>

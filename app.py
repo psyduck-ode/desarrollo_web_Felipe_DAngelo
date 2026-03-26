@@ -1,0 +1,253 @@
+from flask import Flask, request, render_template, redirect, url_for, jsonify
+import database.db as db
+from werkzeug.utils import secure_filename
+import os
+from datetime import datetime
+from math import ceil
+import utils.validations as val
+
+UPLOAD_FOLDER = "static/uploads"
+
+app = Flask(__name__)
+app.secret_key = "s3cr3t_k3y_adopcion"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+# Crear carpeta de uploads si no existe
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# PORTADA
+@app.route("/", methods=["GET"])
+def index():
+    # Obtener mensaje de éxito si existe
+    mensaje = request.args.get('mensaje', '')
+    
+    # Obtener últimos 5 avisos
+    avisos = db.get_ultimos_avisos(5)
+    
+    return render_template("index.html", avisos=avisos, mensaje=mensaje)
+
+# AGREGAR AVISO
+@app.route("/agregar", methods=["GET", "POST"])
+def agregar_aviso():
+    if request.method == "POST":
+        form = request.form
+        files = request.files
+        
+        # Validaciones del lado del servidor
+        errores = {}
+        
+        if not val.validate_region(form.get("select-region")):
+            errores["select-region"] = "Debe seleccionar una región"
+        
+        if not val.validate_comuna(form.get("select-comuna")):
+            errores["select-comuna"] = "Debe seleccionar una comuna"
+        
+        if not val.validate_sector(form.get("input-sector")):
+            errores["input-sector"] = "Sector demasiado largo (máx. 100 caracteres)"
+        
+        if not val.validate_nombre(form.get("nombre")):
+            errores["nombre"] = "Nombre debe tener entre 3 y 200 caracteres"
+        
+        if not val.validate_email(form.get("email")):
+            errores["email"] = "Email inválido"
+        
+        if not val.validate_phone(form.get("numTel")):
+            errores["numTel"] = "Teléfono debe ser formato +569XXXXXXXX"
+        
+        # Validar contactar por
+        contactos_validos, contactos = val.validate_contactar_por(form)
+        if not contactos_validos:
+            errores["contactar_por"] = "Debe seleccionar entre 1 y 5 formas de contacto con sus IDs"
+        
+        if not val.validate_tipo(form.get("select-tipo")):
+            errores["select-tipo"] = "Debe seleccionar perro o gato"
+        
+        if not val.validate_cantidad(form.get("input-cantidad")):
+            errores["input-cantidad"] = "Cantidad debe ser un número mayor a 0"
+        
+        if not val.validate_edad(form.get("input-edad")):
+            errores["input-edad"] = "Edad debe ser un número mayor a 0"
+        
+        if not val.validate_medida_edad(form.get("select-medidaEdad")):
+            errores["select-medidaEdad"] = "Debe seleccionar meses o años"
+        
+        if not val.validate_fecha_entrega(form.get("fecha-disponible-entrega")):
+            errores["fecha-disponible-entrega"] = "Fecha debe ser al menos 3 horas en el futuro"
+        
+        if not val.validate_descripcion(form.get("input-descripcion")):
+            errores["input-descripcion"] = "Descripción demasiado larga (máx. 1000 caracteres)"
+        
+        # Validar fotos
+        fotos_errors = val.validate_fotos(files)
+        errores.update(fotos_errors)
+        
+        # Si hay errores, mostrar formulario con errores
+        if errores:
+            return render_template(
+                "form.html",
+                errores=errores,
+                data=form
+            ), 400
+        
+        # Si todo está bien, guardar en base de datos
+        try:
+            # OBTENER ID DE LA COMUNA
+            comuna_nombre = form.get("select-comuna")
+            comuna = db.get_comuna_by_nombre(comuna_nombre)
+            
+            if not comuna:
+                errores["select-comuna"] = "Comuna inválida"
+                return render_template("form.html", errores=errores, data=form), 400
+            
+            data = {
+                "comuna_id": comuna.id,  # ← USAR ID EN LUGAR DE NOMBRE
+                "sector": form.get("input-sector", "").strip() or None,
+                "nombre": form.get("nombre"),
+                "email": form.get("email"),
+                "celular": form.get("numTel"),
+                "tipo": form.get("select-tipo"),
+                "cantidad": int(form.get("input-cantidad")),
+                "edad": int(form.get("input-edad")),
+                "unidad_medida": form.get("select-medidaEdad"),
+                "fecha_entrega": datetime.strptime(form.get("fecha-disponible-entrega"), "%Y-%m-%dT%H:%M"),
+                "descripcion": form.get("input-descripcion", "").strip() or None
+            }
+            
+            # Crear aviso
+            aviso_id = db.create_aviso(data)
+            
+            # Guardar contactos (CAMBIAR PARÁMETROS)
+            for tipo, valor in contactos:
+                db.add_contacto(aviso_id, tipo, valor)  # nombre, identificador
+            
+            # Guardar fotos
+            foto1 = files.get('input-foto')
+            if foto1 and foto1.filename:
+                filename = secure_filename(foto1.filename)
+                filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                foto1.save(filepath)
+                db.add_foto(aviso_id, filepath, filename)
+            
+            # Fotos adicionales
+            for i in range(2, 6):
+                foto = files.get(f'foto{i}')
+                if foto and foto.filename:
+                    filename = secure_filename(foto.filename)
+                    filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                    foto.save(filepath)
+                    db.add_foto(aviso_id, filepath, filename)
+            
+            # Redirigir a portada con mensaje de éxito
+            return redirect(url_for('index', mensaje='Aviso agregado exitosamente'))
+            
+        except Exception as e:
+            print(f"Error al guardar: {e}")
+            errores["general"] = "Error al guardar el aviso. Intente nuevamente."
+            return render_template("form.html", errores=errores, data=form), 500
+
+            
+        except Exception as e:
+            print(f"Error al guardar: {e}")
+            errores["general"] = "Error al guardar el aviso. Intente nuevamente."
+            return render_template("form.html", errores=errores, data=form), 500
+    
+    # GET: Mostrar formulario vacío
+    return render_template("form.html", errores={}, data={})
+
+# LISTADO DE AVISOS
+@app.route("/listado", methods=["GET"])
+def listado_avisos():
+    page = request.args.get("page", 1, type=int)
+    per_page = 5
+    
+    avisos, total = db.get_avisos_paginados(page, per_page)
+    total_pages = ceil(total / per_page)
+    has_prev = page > 1
+    has_next = page < total_pages
+    
+    return render_template(
+        "listado.html",
+        avisos=avisos,
+        page=page,
+        total_pages=total_pages,
+        has_prev=has_prev,
+        has_next=has_next
+    )
+
+# DETALLE DE AVISO (para cuando hagan click en una fila)
+@app.route("/aviso/<int:aviso_id>", methods=["GET"])
+def detalle_aviso(aviso_id):
+    aviso = db.get_aviso_by_id(aviso_id)
+    if not aviso:
+        return redirect(url_for('listado_avisos'))
+    
+    return render_template("informacion_actividad.html", aviso=aviso)
+
+# ESTADÍSTICAS
+@app.route("/estadisticas", methods=["GET"])
+def estadisticas():
+    return render_template("estadisticas.html")
+
+#Tarea 3
+@app.route("/api/avisos/<int:aviso_id>/comentarios", methods=["GET"])
+def obtener_comentarios(aviso_id):
+    comentarios = db.get_comentarios_by_aviso(aviso_id)
+    return jsonify([{
+        'id': c.id,
+        'nombre': c.nombre,
+        'texto': c.texto,
+        'fecha': c.fecha.strftime('%Y-%m-%d %H:%M:%S')
+    } for c in comentarios])
+    
+
+@app.route("/api/avisos/<int:aviso_id>/comentarios", methods=["POST"])
+def agregar_comentario(aviso_id):   
+    data = request.get_json()
+    nombre = (data.get('nombre') or '').strip()
+    texto = (data.get('texto') or '').strip()    
+    errores = {}
+        
+    if not nombre or len(nombre) < 3 or len(nombre) > 80:
+        errores['nombre'] = 'El nombre debe tener entre 3 y 80 caracteres'
+        
+    if not texto or len(texto) < 5 or len(texto) > 300:
+        errores['texto'] = 'El comentario debe tener entre 5 y 300 caracteres'
+        
+    if errores:
+        return jsonify({'errores': errores}), 400
+        
+    comentario_id = db.add_comentario(nombre, texto, aviso_id)
+        
+    return jsonify({
+        'mensaje': 'Comentario agregado exitosamente',
+        'id': comentario_id
+    }), 201
+        
+
+@app.route("/api/estadisticas/avisos-por-dia", methods=["GET"])
+def estadisticas_avisos_por_dia():
+    fechas, cantidades = db.avisos_por_dia()
+    return jsonify({
+        'fechas': fechas,
+        'cantidades': cantidades
+    })
+
+@app.route("/api/estadisticas/avisos-por-tipo", methods=["GET"])
+def estadistica_avisos_por_tipo():
+    tipos, cantidades = db.avisos_por_tipo()
+    return jsonify({
+        'tipos': tipos,
+        'cantidades': cantidades
+    })
+
+@app.route("/api/estadisticas/avisos-por-mes-tipo", methods=["GET"])
+def estadistica_avisos_por_mes_tipo():
+    meses, perros, gatos = db.avisos_por_mes_tipo()
+    return jsonify({
+        'meses': meses,
+        'perros': perros,
+        'gatos': gatos
+    })
+
+if __name__ == "__main__":
+    app.run(debug=True)

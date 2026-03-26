@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Patitas en Busca de un Hogar</title>
+    <link rel="stylesheet" href="static/css/styleList.css">
+</head>
+<body>
+    <h1>Bienvenidos a Patitas en Busca de un Hogar</h1>
+    
+    {% if mensaje %}
+    <div style="background-color: #ddffdd; border-left: 5px solid #4CAF50; padding: 10px; margin: 20px 0;">
+        <p>{{ mensaje }}</p>
+    </div>
+    {% endif %}
+    
+    <!-- Botones del menu -->
+    <div>
+        <button type="button" id="btn-agregar-aviso-adopción" onclick="window.location.href=`{{ url_for('agregar_aviso') }}`">Agregar aviso de adopción</button>
+        <button type="button" id="btn-ver-listado-de-adopciones" onclick="window.location.href=`{{ url_for('listado_avisos') }}`">Ver listado de adopciones</button>
+        <button type="button" id="btn-estadisticas" onclick="window.location.href=`{{ url_for('estadisticas') }}`">Estadísticas</button>
+    </div>
+    
+    <!-- Tabla con últimos 5 avisos -->
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha de publicación</th>
+                    <th>Comuna</th>
+                    <th>Sector</th>
+                    <th>Cantidad Tipo Edad</th>
+                    <th>Foto</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aviso in avisos %}
+                <tr>
+                    <td>
+                        {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>
+                        {{ aviso.fecha_entrega.strftime('%H:%M') }}
+                    </td>
+                    <td>{{ aviso.comuna.nombre }}</td>
+                    <td>{{ aviso.sector if aviso.sector else '-' }}</td>
+                    <td>
+                        {{ aviso.cantidad }} {{ 'Gato' if aviso.tipo_mascota == 'gato' else 'Perro' }}{{ 's' if aviso.cantidad > 1 else '' }}<br>
+                        {{ aviso.edad }} {{ aviso.medida_edad }}
+                    </td>
+                    <td>
+                        {% if aviso.fotos %}
+                            <img src="{{ url_for('static', filename=aviso.fotos[0].ruta_archivo.replace('static/', '')) }}" 
+                                 width="320px" height="240px" alt="Foto mascota">
+                        {% else %}
+                            Sin foto
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">No hay avisos de adopción aún</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

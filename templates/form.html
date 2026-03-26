@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Adopción</title>
+    <link rel="stylesheet" href="static/css/styleForm.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Mostrar errores si existen -->
+        {% if errores %}
+        <div id="val-box" style="background-color: #ffdddd; border-left: 5px solid #f44336; padding: 10px; margin: 20px 0;">
+            <h2>Los siguientes campos son inválidos:</h2>
+            <ul>
+                {% for campo, error in errores.items() %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <div id="val-box" hidden>
+            <h2 id="val-msg"></h2>
+            <ul id="val-list"></ul>
+        </div>
+        {% endif %}
+        
+        <form name="myForm" method="post" action="{{ url_for('agregar_aviso') }}" enctype="multipart/form-data">
+            <td>¿Donde?</td><br>
+            
+            <label for="select-region">Región</label>
+            <select name="select-region" id="select-region" required>
+                <option value="">Seleccione una región</option>
+            </select><br>
+
+            <label for="select-comuna">Comuna</label>
+            <select name="select-comuna" id="select-comuna" required>
+                <option value="">Seleccione una comuna</option>
+            </select><br>
+
+            <label for="input-sector">Sector</label>
+            <input type="text" name="input-sector" id="input-sector" maxlength="100" 
+                   value="{{ data.get('input-sector', '') }}"><br>
+        
+            <td>¿Contacto de esta publicación?</td><br>
+
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre" minlength="3" maxlength="200" required
+                   value="{{ data.get('nombre', '') }}"><br>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" maxlength="100" required
+                   value="{{ data.get('email', '') }}"><br>
+
+            <label for="numTel">Número de teléfono</label>
+            <input type="tel" name="numTel" id="numTel" required placeholder="+56912345678"
+                   value="{{ data.get('numTel', '') }}"><br>
+
+            <label for="select-contactarPor">Contactar por</label><br>
+
+            <input type="checkbox" name="whatsapp" onclick="revisaCheck(this);"> whatsapp
+            <input id="whatsapp" type="text" name="whatsapp-id" style="display:none;" minlength="4" maxlength="50"><br>
+
+            <input type="checkbox" name="telegram" onclick="revisaCheck(this);"> telegram
+            <input id="telegram" type="text" name="telegram-id" style="display:none;" minlength="4" maxlength="50"><br>
+
+            <input type="checkbox" name="x" onclick="revisaCheck(this);"> X
+            <input id="x" type="text" name="x-id" style="display:none;" minlength="4" maxlength="50"><br>
+
+            <input type="checkbox" name="instagram" onclick="revisaCheck(this);"> instagram
+            <input id="instagram" type="text" name="instagram-id" style="display:none;" minlength="4" maxlength="50"><br>
+
+            <input type="checkbox" name="tiktok" onclick="revisaCheck(this);"> tiktok
+            <input id="tiktok" type="text" name="tiktok-id" style="display:none;" minlength="4" maxlength="50"><br>
+
+            <input type="checkbox" name="otra" onclick="revisaCheck(this);"> otra
+            <input id="otra" type="text" name="otra-id" style="display:none;" minlength="4" maxlength="50"><br>
+
+            <td>¿Qué mascota ofrece en adopción?</td><br>
+            
+            <label for="select-tipo">Tipo</label>
+            <select name="select-tipo" id="select-tipo" required>
+                <option value="">Seleccione un tipo</option>
+                <option value="perro" {% if data.get('select-tipo') == 'perro' %}selected{% endif %}>Perro</option>
+                <option value="gato" {% if data.get('select-tipo') == 'gato' %}selected{% endif %}>Gato</option>
+            </select><br>
+                
+            <label for="input-cantidad">Cantidad</label>
+            <input type="number" name="input-cantidad" id="input-cantidad" min="1" required
+                   value="{{ data.get('input-cantidad', '') }}"><br>
+
+            <label for="input-edad">Edad</label>
+            <input type="number" name="input-edad" id="input-edad" min="1" required
+                   value="{{ data.get('input-edad', '') }}"><br>
+
+            <label for="select-medidaEdad">Medida de edad</label>
+            <select name="select-medidaEdad" id="select-medidaEdad" required>
+                <option value="">Seleccione una medida</option>
+                <option value="m" {% if data.get('select-medidaEdad') == 'm' %}selected{% endif %}>Meses</option>
+                <option value="a" {% if data.get('select-medidaEdad') == 'a' %}selected{% endif %}>Años</option>
+            </select><br>
+
+            <label for="fecha-disponible-entrega">Fecha disponible para la entrega</label>
+            <input type="datetime-local" id="fecha-disponible-entrega" name="fecha-disponible-entrega" required><br>
+
+            <label for="input-descripcion">Descripción</label>
+            <textarea name="input-descripcion" id="input-descripcion" rows="10" cols="50">{{ data.get('input-descripcion', '') }}</textarea><br>
+
+            <label for="input-foto">Foto</label>
+            <input type="file" name="input-foto" id="input-foto" accept="image/*" required><br>
+            <button type="button" id="btn-agregar-foto" name="otra-foto" onclick="agregarFoto()">agregar otra foto</button>
+            
+            <div id="mas-fotos"></div>
+            <br>
+
+            <button type="button" id="btn-enviar">Agregar este aviso de adopción</button>
+            <div id="confirmar" class="modal" style="display: none;">
+                <div class="modal-box">
+                    <p>¿Está seguro que desea agregar esta actividad?</p>
+                    <button type="submit" id="btn-si">Sí, estoy seguro</button>
+                    <button type="button" id="btn-no">No, no estoy seguro, quiero volver al formulario.</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <button type="button" id="btn-volver-inicio" onclick="window.location.href=`{{ url_for('index') }}`">Volver al inicio</button>
+    
+    <script src="{{ url_for('static', filename='js/select.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/revisaCheck.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fechaHora.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/agregarFoto.js') }}"></script>
+</body>
+</html>

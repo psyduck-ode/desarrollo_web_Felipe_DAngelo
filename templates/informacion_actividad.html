@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Información Adopción</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleList.css') }}">
+</head>
+<body>
+    <h2>Información Detallada de la adopción</h2>
+    
+    <div>
+        <p id="fecha-publicacion"><strong>Fecha publicación:</strong> {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>{{ aviso.fecha_entrega.strftime('%H:%M') }}</p>
+        
+        <p id="fecha-entrega"><strong>Fecha Entrega:</strong> {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>{{ aviso.fecha_entrega.strftime('%H:%M') }}</p>
+        
+        <p id="region"><strong>Región:</strong> {{ aviso.comuna.region.nombre }}</p>
+        
+        <p id="comuna"><strong>Comuna:</strong> {{ aviso.comuna.nombre }}</p>
+        
+        <p id="sector"><strong>Sector:</strong> {{ aviso.sector if aviso.sector else '-' }}</p>
+        
+        <p id="C-T-E"><strong>Cantidad Tipo Edad:</strong> 
+            {{ aviso.cantidad }} {{ 'Gato' if aviso.tipo_mascota == 'gato' else 'Perro' }}{{ 's' if aviso.cantidad > 1 else '' }}<br>
+            {{ aviso.edad }} {{ aviso.medida_edad }}
+        </p>
+        
+        <p id="nombre-Contacto"><strong>Nombre Contacto:</strong> {{ aviso.nombre_contacto }}</p>
+        
+        <p><strong>Email:</strong> {{ aviso.email }}</p>
+        
+        <p><strong>Teléfono:</strong> {{ aviso.telefono }}</p>
+        
+        {% if aviso.contactos %}
+        <p><strong>Contactar por:</strong></p>
+        <ul>
+            {% for contacto in aviso.contactos %}
+            <li>{{ contacto.tipo }}: {{ contacto.valor }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        
+        {% if aviso.descripcion %}
+        <p><strong>Descripción:</strong></p>
+        <p>{{ aviso.descripcion }}</p>
+        {% endif %}
+        
+        {% if aviso.fotos %}
+        <p id="total-fotos"><strong>Total Fotos:</strong> {{ aviso.fotos|length }}</p>
+    </div>
+        <div>
+            {% for foto in aviso.fotos %}
+            <img src="static/', '" 
+                 width="320" height="240" style="margin: 10px; cursor: pointer;" alt="Foto mascota"
+                 onclick="ampliarImagen(this.src)">
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!--TArea 3-->>
+        <div id="comentarios-section" data-aviso-id="{{ aviso.id }}" style="margin-top: 30px; border-top: 2px solid #ccc; padding-top: 20px;">
+            <h3>Comentarios</h3>
+            
+            <div id="comentarios-lista" style="margin-top: 20px;"></div>
+
+        <h4>Agregar comentario</h4>
+        <div id="comentario-errores" style="display:none; color:red; margin-bottom:10px;">
+            <ul id="comentario-errores-lista"></ul>
+        </div>
+        <form id="comentario-form">
+            <label>Nombre:</label><br>
+            <input type="text" id="comentario-nombre" maxlength="80" required><br><br>
+            
+            <label>Comentario:</label><br>
+            <textarea id="comentario-texto" rows="4" cols="50" maxlength="300" required></textarea><br><br>
+            
+            <button type="button" id="btn-agregar-comentario">Agregar comentario</button>
+        </form>
+
+
+    </div>
+
+    <button type="button" id="btn-volver-a-la-tabla" onclick="window.location.href=`{{ url_for('listado_avisos') }}`">Volver a la tabla</button>
+    <button type="button" id="btn-volver-al-inicio" onclick="window.location.href=`{{ url_for('index') }}`">Volver al inicio</button>
+
+    <script>
+    // Función para ampliar imágenes al hacer click
+    function ampliarImagen(src) {
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.backgroundColor = 'rgba(0,0,0,0.8)';
+        overlay.style.display = 'flex';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.zIndex = '1000';
+        overlay.style.cursor = 'pointer';
+
+        const imgGrande = document.createElement('img');
+        imgGrande.src = src;
+        imgGrande.style.maxWidth = '90%';
+        imgGrande.style.maxHeight = '90%';
+
+        overlay.onclick = () => overlay.remove();
+        overlay.appendChild(imgGrande);
+        document.body.appendChild(overlay);
+    }
+    </script>
+    <!--Tarea 3-->
+    <script src="{{ url_for('static', filename='js/comentarios.js') }}"></script>
+
+</body>
+</html>

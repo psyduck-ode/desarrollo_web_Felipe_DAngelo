@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Patitas en Busca de un Hogar</title>
+    <link rel="stylesheet" th:href="@{/css/styleList.css}">
+</head>
+
+<body>
+    <!-- Fragment:  -->
+    <nav th:fragment="navbar">
+        <div class="navbar">
+            <h1>🐾 Patitas en Busca de un Hogar</h1>
+            <div class="nav-buttons">
+                <button type="button" onclick="window.location.href='/'" class="btn btn-nav">🏠 Inicio</button>
+                <button type="button" onclick="window.location.href='/agregar'" class="btn btn-nav">➕ Agregar Aviso</button>
+                <button type="button" onclick="window.location.href='/listado'" class="btn btn-nav">📋 Ver Listado</button>
+                <button type="button" onclick="window.location.href='/evaluaciones'" class="btn btn-nav">⭐ Evaluaciones</button>
+                <button type="button" onclick="window.location.href='/estadisticas'" class="btn btn-nav">📊 Estadísticas</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Fragment: Paginación -->
+    <div th:fragment="paginacion(page, totalPages, hasPrev, hasNext, url)">
+        <div class="paginacion">
+            <a th:if="${hasPrev}" 
+               th:href="@{${url}(page=${page - 1})}" 
+               class="btn btn-paginacion">« Anterior</a>
+            
+            <span class="pagina-actual">
+                Página <strong th:text="${page}"></strong> de <strong th:text="${totalPages}"></strong>
+            </span>
+            
+            <a th:if="${hasNext}" 
+               th:href="@{${url}(page=${page + 1})}" 
+               class="btn btn-paginacion">Siguiente »</a>
+        </div>
+    </div>
+</body>
+</html>

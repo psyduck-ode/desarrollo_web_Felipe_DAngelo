@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Lista Adopción</title>
+    <link rel="stylesheet" th:href="@{/css/styleList.css}">
+</head>
+<body>
+    <h2>Listado de Adopción</h2>
+    
+    <div>
+        <table id="actividades-mas">
+            <thead>
+                <tr>
+                    <th>Fecha publicación</th>
+                    <th>Fecha Entrega</th>
+                    <th>Comuna</th>
+                    <th>Sector</th>
+                    <th>Cantidad Tipo Edad</th>
+                    <th>Nombre Contacto</th>
+                    <th>Total fotos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="aviso : ${avisos}" 
+                    th:onclick="|window.location.href='@{/aviso/{id}(id=${aviso.id})}'|" 
+                    style="cursor: pointer;">
+                    <td>
+                        <span th:text="${#temporals.format(aviso.fechaIngreso, 'yyyy-MM-dd')}"></span><br>
+                        <span th:text="${#temporals.format(aviso.fechaIngreso, 'HH:mm')}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${#temporals.format(aviso.fechaEntrega, 'yyyy-MM-dd')}"></span><br>
+                        <span th:text="${#temporals.format(aviso.fechaEntrega, 'HH:mm')}"></span>
+                    </td>
+                    <td th:text="${aviso.comuna.nombre}"></td>
+                    <td th:text="${aviso.sector != null ? aviso.sector : '-'}"></td>
+                    <td>
+                        <span th:text="${aviso.cantidad}"></span>
+                        <span th:text="${aviso.tipo.name() == 'gato' ? 'Gato' : 'Perro'}"></span>
+                        <span th:text="${aviso.cantidad > 1 ? 's' : ''}"></span><br>
+                        <span th:text="${aviso.edad}"></span>
+                        <span th:text="${aviso.unidadMedida.name()}"></span>
+                    </td>
+                    <td th:text="${aviso.nombre}"></td>
+                    <td th:text="${#lists.size(aviso.fotos)}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(avisos)}">
+                    <td colspan="7">No hay avisos de adopción</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Paginación -->
+    <div class="botones-navegacion" style="margin: 20px 0; text-align: center;">
+        <a th:if="${hasPrev}" 
+           th:href="@{/listado(page=${page - 1})}" 
+           style="margin-right: 10px; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">« Anterior</a>
+        
+        <span style="margin: 0 20px; font-weight: bold;">
+            Página <span th:text="${page}"></span> de <span th:text="${totalPages}"></span>
+        </span>
+        
+        <a th:if="${hasNext}" 
+           th:href="@{/listado(page=${page + 1})}" 
+           style="margin-left: 10px; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Siguiente »</a>
+    </div>
+    
+    <button type="button" id="btn-volver-inicio-listado" th:onclick="|window.location.href='@{/}'|">Volver al inicio</button>
+</body>
+</html>

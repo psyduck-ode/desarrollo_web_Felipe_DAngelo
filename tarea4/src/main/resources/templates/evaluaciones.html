@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Evaluaciones de Avisos')}"></head>
+<body>
+    <!-- Navbar usando fragment -->
+    <div th:replace="~{layout :: navbar}"></div>
+    
+    <main class="container">
+        <h2>Evaluaciones de Avisos de Adopción</h2>
+        <p class="descripcion">Califica los avisos de adopción con una nota del 1 al 7</p>
+        
+        <!-- Tabla de evaluaciones -->
+        <div class="table-container">
+            <table class="tabla-evaluaciones">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha publicación</th>
+                        <th>Sector</th>
+                        <th>Cantidad Tipo Edad</th>
+                        <th>Comuna</th>
+                        <th>Nota</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="aviso : ${avisos}" th:id="'aviso-' + ${aviso.id}">
+                        <td th:text="${aviso.id}"></td>
+                        <td th:text="${#temporals.format(aviso.fechaIngreso, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${aviso.sector != null ? aviso.sector : '-'}"></td>
+                        <td th:text="${aviso.cantidad}"></td>
+                        <td th:text="${aviso.tipo.name() == 'gato' ? 'gato' : 'perro'}"></td>
+                        <td>
+                            <span th:text="${aviso.edad}"></span>
+                            <span th:text="${aviso.unidadMedida.name() == 'm' ? 'meses' : 'años'}"></span>
+                        </td>
+                        <td th:text="${aviso.comuna.nombre}"></td>
+                        <td class="nota-cell">
+                            <span th:id="'nota-' + ${aviso.id}" class="nota-valor">
+                                <span th:if="${promedios.get(aviso.id) != null}" 
+                                      th:text="${#numbers.formatDecimal(promedios.get(aviso.id), 1, 1)}"></span>
+                                <span th:unless="${promedios.get(aviso.id) != null}">-</span>
+                            </span>
+                        </td>
+                        <td>
+                            <button type="button" 
+                                    class="btn btn-evaluar" 
+                                    th:onclick="'evaluarAviso(' + ${aviso.id} + ')'">
+                                evaluar
+                            </button>
+                        </td>
+                    </tr>
+                    
+                    <tr th:if="${#lists.isEmpty(avisos)}">
+                        <td colspan="9" style="text-align: center;">No hay avisos de adopción aún</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Paginación usando fragment -->
+        <div th:replace="~{layout :: paginacion(${page}, ${totalPages}, ${hasPrev}, ${hasNext}, '/evaluaciones')}"></div>
+    </main>
+    
+    <!-- Modal para evaluar -->
+    <div id="modal-evaluar" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" onclick="cerrarModal()">&times;</span>
+            <h3>Evaluar Aviso</h3>
+            <p>Seleccione una nota del 1 al 7 para este aviso:</p>
+            
+            <div id="mensaje-modal" class="mensaje-modal" style="display: none;"></div>
+            
+            <div class="opciones-nota">
+                <button class="btn-nota" onclick="seleccionarNota(1)">1</button>
+                <button class="btn-nota" onclick="seleccionarNota(2)">2</button>
+                <button class="btn-nota" onclick="seleccionarNota(3)">3</button>
+                <button class="btn-nota" onclick="seleccionarNota(4)">4</button>
+                <button class="btn-nota" onclick="seleccionarNota(5)">5</button>
+                <button class="btn-nota" onclick="seleccionarNota(6)">6</button>
+                <button class="btn-nota" onclick="seleccionarNota(7)">7</button>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer usando fragment -->
+    <div th:replace="~{layout :: footer}"></div>
+    
+    <!-- JavaScript para evaluaciones -->
+    <script th:src="@{/js/evaluaciones.js}"></script>
+    
+</body>
+</html>

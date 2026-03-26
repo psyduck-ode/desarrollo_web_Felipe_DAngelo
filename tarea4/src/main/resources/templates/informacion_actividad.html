@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Información Adopción</title>
+    <link rel="stylesheet" th:href="@{/css/styleList.css}">
+</head>
+<body>
+    <h2>Información Detallada de la adopción</h2>
+    
+    <div>
+        <p id="fecha-publicacion">
+            <strong>Fecha publicación:</strong> 
+            <span th:text="${#temporals.format(aviso.fechaIngreso, 'yyyy-MM-dd')}"></span><br>
+            <span th:text="${#temporals.format(aviso.fechaIngreso, 'HH:mm')}"></span>
+        </p>
+        
+        <p id="fecha-entrega">
+            <strong>Fecha Entrega:</strong> 
+            <span th:text="${#temporals.format(aviso.fechaEntrega, 'yyyy-MM-dd')}"></span><br>
+            <span th:text="${#temporals.format(aviso.fechaEntrega, 'HH:mm')}"></span>
+        </p>
+        
+        <p id="region">
+            <strong>Región:</strong> 
+            <span th:text="${aviso.comuna.region.nombre}"></span>
+        </p>
+        
+        <p id="comuna">
+            <strong>Comuna:</strong> 
+            <span th:text="${aviso.comuna.nombre}"></span>
+        </p>
+        
+        <p id="sector">
+            <strong>Sector:</strong> 
+            <span th:text="${aviso.sector != null ? aviso.sector : '-'}"></span>
+        </p>
+        
+        <p id="C-T-E">
+            <strong>Cantidad Tipo Edad:</strong><br>
+            <span th:text="${aviso.cantidad}"></span>
+            <span th:text="${aviso.tipo.name() == 'gato' ? 'Gato' : 'Perro'}"></span>
+            <span th:text="${aviso.cantidad > 1 ? 's' : ''}"></span><br>
+            <span th:text="${aviso.edad}"></span>
+            <span th:text="${aviso.unidadMedida.name()}"></span>
+        </p>
+        
+        <p id="nombre-Contacto">
+            <strong>Nombre Contacto:</strong> 
+            <span th:text="${aviso.nombre}"></span>
+        </p>
+        
+        <p>
+            <strong>Email:</strong> 
+            <span th:text="${aviso.email}"></span>
+        </p>
+        
+        <p>
+            <strong>Teléfono:</strong> 
+            <span th:text="${aviso.celular}"></span>
+        </p>
+        
+        <div th:if="${!aviso.contactarPor.isEmpty()}">
+            <p><strong>Contactar por:</strong></p>
+            <ul>
+                <li th:each="contacto : ${aviso.contactarPor}">
+                    <span th:text="${contacto.nombre}"></span>: 
+                    <span th:text="${contacto.identificador}"></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div th:if="${aviso.descripcion != null && !aviso.descripcion.isEmpty()}">
+            <p><strong>Descripción:</strong></p>
+            <p th:text="${aviso.descripcion}"></p>
+        </div>
+        
+        <p th:if="${!aviso.fotos.isEmpty()}" id="total-fotos">
+            <strong>Total Fotos:</strong> 
+            <span th:text="${#lists.size(aviso.fotos)}"></span>
+        </p>
+    </div>
+    
+    <div th:if="${!aviso.fotos.isEmpty()}">
+        <img th:each="foto : ${aviso.fotos}" 
+             th:src="@{'/uploads/' + ${foto.nombreArchivo}}" 
+             width="320" height="240" 
+             style="margin: 10px; cursor: pointer;" 
+             alt="Foto mascota"
+             onclick="ampliarImagen(this.src)">
+    </div>
+    
+    <!--Tarea 3-->
+    <div id="comentarios-section" th:attr="data-aviso-id=${aviso.id}" 
+         style="margin-top: 30px; border-top: 2px solid #ccc; padding-top: 20px;">
+        <h3>Comentarios</h3>
+        
+        <div id="comentarios-lista" style="margin-top: 20px;"></div>
+
+        <h4>Agregar comentario</h4>
+        <div id="comentario-errores" style="display:none; color:red; margin-bottom:10px;">
+            <ul id="comentario-errores-lista"></ul>
+        </div>
+        <form id="comentario-form">
+            <label>Nombre:</label><br>
+            <input type="text" id="comentario-nombre" maxlength="80" required><br><br>
+            
+            <label>Comentario:</label><br>
+            <textarea id="comentario-texto" rows="4" cols="50" maxlength="300" required></textarea><br><br>
+            
+            <button type="button" id="btn-agregar-comentario">Agregar comentario</button>
+        </form>
+    </div>
+
+    <button type="button" id="btn-volver-a-la-tabla" th:onclick="|window.location.href='@{/listado}'|">Volver a la tabla</button>
+    <button type="button" id="btn-volver-al-inicio" th:onclick="|window.location.href='@{/}'|">Volver al inicio</button>
+
+    <script>
+    // Función para ampliar imágenes al hacer click
+    function ampliarImagen(src) {
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.backgroundColor = 'rgba(0,0,0,0.8)';
+        overlay.style.display = 'flex';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.zIndex = '1000';
+        overlay.style.cursor = 'pointer';
+
+        const imgGrande = document.createElement('img');
+        imgGrande.src = src;
+        imgGrande.style.maxWidth = '90%';
+        imgGrande.style.maxHeight = '90%';
+
+        overlay.onclick = () => overlay.remove();
+        overlay.appendChild(imgGrande);
+        document.body.appendChild(overlay);
+    }
+    </script>
+    <!--Tarea 3-->
+    <script th:src="@{/js/comentarios.js}"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Lista Adopción</title>
+    <link rel="stylesheet" href="static/css/styleList.css">
+</head>
+<body>
+    <h2>Listado de Adopción</h2>
+    
+    <div>
+        <table id="actividades-mas">
+            <thead>
+                <tr>
+                    <th>Fecha publicación</th>
+                    <th>Fecha Entrega</th>
+                    <th>Comuna</th>
+                    <th>Sector</th>
+                    <th>Cantidad Tipo Edad</th>
+                    <th>Nombre Contacto</th>
+                    <th>Total fotos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aviso in avisos %}
+                <tr onclick="window.location.href=`{{ url_for('detalle_aviso', aviso_id=aviso.id) }}`" style="cursor: pointer;">
+                    <td>
+                        {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>
+                        {{ aviso.fecha_entrega.strftime('%H:%M') }}
+                    </td>
+                    <td>
+                        {{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}<br>
+                        {{ aviso.fecha_entrega.strftime('%H:%M') }}
+                    </td>
+                    <td>{{ aviso.comuna.nombre }}</td>
+                    <td>{{ aviso.sector if aviso.sector else '-' }}</td>
+                    <td>
+                        {{ aviso.cantidad }} {{ 'Gato' if aviso.tipo_mascota == 'gato' else 'Perro' }}{{ 's' if aviso.cantidad > 1 else '' }}<br>
+                        {{ aviso.edad }} {{ aviso.medida_edad }}
+                    </td>
+                    <td>{{ aviso.nombre_contacto }}</td>
+                    <td>{{ aviso.fotos|length }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7">No hay avisos de adopción</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Paginación -->
+    <div class="botones-navegacion" style="margin: 20px 0; text-align: center;">
+        {% if has_prev %}
+        <a href="{{ url_for('listado_avisos', page=page-1) }}" style="margin-right: 10px; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">« Anterior</a>
+        {% endif %}
+        
+        <span style="margin: 0 20px; font-weight: bold;">Página {{ page }} de {{ total_pages }}</span>
+        
+        {% if has_next %}
+        <a href="{{ url_for('listado_avisos', page=page+1) }}" style="margin-left: 10px; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Siguiente »</a>
+        {% endif %}
+    </div>
+    
+    <button type="button" id="btn-volver-inicio-listado" onclick="window.location.href=`{{ url_for('index') }}`">Volver al inicio</button>
+</body>
+</html>
